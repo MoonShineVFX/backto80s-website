@@ -104,13 +104,49 @@ function CameraLayout() {
       {location.pathname === '/' &&
         <div 
           onMouseMove={(e) => handleMouseMove(e)} 
-          className='bg-black/10 absolute w-full h-screen top-0 -z-10 '
+          className='bg-black/10 absolute w-full h-screen top-0 -z-10  overflow-hidden'
         >
           <motion.div 
             animate={imgAnimation}
-            className=' absolute -top-20 -left-10'
+            className=' absolute -top-[10%] -left-10'
           >
             <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon01.png" alt="" />
+          </motion.div>
+          <motion.div 
+            animate={imgAnimation}
+            className=' absolute top-[30%] -left-10'
+          >
+            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon02.png" alt="" />
+          </motion.div>
+          <motion.div 
+            animate={imgAnimation}
+            className=' absolute top-[60%] -left-10'
+          >
+            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon03.png" alt="" />
+          </motion.div>
+          <motion.div 
+            animate={imgAnimation}
+            className=' absolute -top-20 -right-10'
+          >
+            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon04.png" alt="" />
+          </motion.div>
+          <motion.div 
+            animate={imgAnimation}
+            className=' absolute top-[30%] -right-10'
+          >
+            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon05.png" alt="" />
+          </motion.div>
+          <motion.div 
+            animate={imgAnimation}
+            className=' absolute top-[50%] -right-10'
+          >
+            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon06.png" alt="" />
+          </motion.div>
+          <motion.div 
+            animate={imgAnimation}
+            className=' absolute top-[60%] -right-10'
+          >
+            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon07.png" alt="" />
           </motion.div>
         </div>
 
