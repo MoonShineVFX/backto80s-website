@@ -14,23 +14,35 @@ function CameraLayout() {
 
   const imgAnimation = useAnimation()
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  // 監聽滑鼠移動事件並更新滑鼠位置
+
+  const images = [
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon08.png', top:'-19%' ,left:'11%' , width:'18%'},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon01.png', top:'-10%' ,left:'-6%' , width:'23%'},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon02.png', top:'30%' , left:'7%' , width:'12%'},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon03.png', top:'65%' , left:'-6%' , width:'30%'},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon04.png', top:'-15%' ,left:'75%', width:'30%'},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon05.png', top:'25%' , left:'70%', width:'15%'},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon06.png', top:'45%' , left:'76%', width:'18%'},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon07.png', top:'70%' , left:'76%', width:'28%'},
+  ]
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   const handleMouseMove = (e) => {
     const { clientX, clientY } = e;
-    console.log(clientX, clientY)
-    setMousePosition({ x: clientX, y: clientY });
+    const offsetX = (clientX - window.innerWidth / 2) / 10;
+    const offsetY = (clientY - window.innerHeight / 2) / 10;
+    setPosition({ x: offsetX, y: offsetY });
   };
-  // 根據滑鼠位置計算視差效果
   useEffect(() => {
-    const offsetFactor = 10;
-    const moveX = mousePosition.x - window.innerWidth / 2;
-    const moveY = mousePosition.y - window.innerHeight / 2;
-    console.log(moveX, moveY)
-    imgAnimation.start({
-      x: moveX / offsetFactor,
-      y: moveY / offsetFactor,
-    });
-  }, [mousePosition, imgAnimation]);
+
+    // 监听鼠标移动事件
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      // 清除事件监听器
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
   useEffect(() => {
     window.addEventListener('resize', handleResize);
     
@@ -93,61 +105,35 @@ function CameraLayout() {
     
 
 
-      
-        {/* <div className='text-sm text-white/30  text-center p-2'>
-          This site is protected by reCAPTCHA and the Google
-          <a href="https://policies.google.com/privacy">Privacy Policy</a> and
-          <a href="https://policies.google.com/terms">Terms of Service</a> apply.
-        </div> */}
+
 
       </div>
       {location.pathname === '/' &&
         <div 
-          onMouseMove={(e) => handleMouseMove(e)} 
+          
           className='bg-black/10 absolute w-full h-screen top-0 -z-10  overflow-hidden'
         >
-          <motion.div 
-            animate={imgAnimation}
-            className=' absolute -top-[10%] -left-10'
-          >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon01.png" alt="" />
-          </motion.div>
-          <motion.div 
-            animate={imgAnimation}
-            className=' absolute top-[30%] -left-10'
-          >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon02.png" alt="" />
-          </motion.div>
-          <motion.div 
-            animate={imgAnimation}
-            className=' absolute top-[60%] -left-10'
-          >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon03.png" alt="" />
-          </motion.div>
-          <motion.div 
-            animate={imgAnimation}
-            className=' absolute -top-20 -right-10'
-          >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon04.png" alt="" />
-          </motion.div>
-          <motion.div 
-            animate={imgAnimation}
-            className=' absolute top-[30%] -right-10'
-          >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon05.png" alt="" />
-          </motion.div>
-          <motion.div 
-            animate={imgAnimation}
-            className=' absolute top-[50%] -right-10'
-          >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon06.png" alt="" />
-          </motion.div>
-          <motion.div 
-            animate={imgAnimation}
-            className=' absolute top-[60%] -right-10'
-          >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/icon07.png" alt="" />
-          </motion.div>
+          {images.map((image,index)=>{
+            const offsetX = (position.x + index) / (index+2); // 使用索引来产生不同的偏移
+            const offsetY = (position.y + index) / (index+2); 
+            return(
+              <div 
+                onMouseMove={(e) => handleMouseMove(e)} 
+                className={`absolute`}
+                style={{
+                  top:`${image.top}`,
+                  left:`${image.left}`,
+                  width:`${image.width}`,
+                  transform: `translate(${offsetX}px, ${offsetY}px)`,
+                }}
+              >
+                <img src={image.url} alt="" className='max-w-full w-full' />
+              </div>
+            )
+
+            })
+          }
+
         </div>
 
       }
