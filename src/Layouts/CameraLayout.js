@@ -58,21 +58,31 @@ function CameraLayout() {
         backgroundImage: `url('https://moonshine.b-cdn.net/msweb/backto80s_ai/bg01.png')`,
       }}
     >   
-        <div className='w-full md:aspect-[14/6] flex flex-col h-full md:h-auto justify-between  px-0 md:px-2 pt-4 md:pt-10 relative'>
-          <div className='flex justify-between md:h-14  items-start px-10 md:px-0 flex-col md:flex-row '>
-            <div className='w-full md:w-1/4  mt-0 md:mt-0 h-full order-2 md:order-1'>
+        {location.pathname === '/camera' &&
+          <motion.div 
+            className=' pt-8 text-gray-200   w-2/5 mx-auto z-20 '
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/logo.png" alt="" />
+          </motion.div>
+        }
+        <div className='w-full md:aspect-[14/6] flex flex-col h-full md:h-auto justify-between  px-0 md:px-12 pt-4 md:pt-1 relative'>
+          <div className='flex justify-between md: items-start px-10 md:px-0 flex-col md:flex-row '>
+            <div className='w-full md:w-full h-full '>
             {location.pathname === '/camera' ? 
               <>
+                <div className='flex items-center gap-2 relative'>
+                  <img src={process.env.PUBLIC_URL+'/images/title_heart.png'} alt="" className='max-w-full absolute -top-3 left-1 w-7   '/> 
+                  <div className='text-[#FF0050] text-base font-bold bg-[#FFF7BB] border-[#111111] border rounded-full  px-3 py-1 ml-2'>STEP1 : Take Photo </div>
+                </div>
                 <Link to='/' className=" " >
-                  <Button variant="text" className="flex items-center gap-3 text-white p-0 mb-2 hover:text-red-500 text-base">
-                    <FaArrowLeft size={15} />
+                  <Button variant="text" className="flex items-center gap-3 text-[#FF3976] p-0 mb-2text-2xl font-extrabold  mt-2 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]">
+                    <FaArrowLeft size={15} className='ml-2' />
                     Back 
                   </Button>
                 </Link>
-                <div className='flex items-center gap-2'>
-                  <img src={process.env.PUBLIC_URL+'/images/title_slash.svg'} alt="" className='max-w-full   '/> 
-                  <div className='text-[#FF0050] text-base font-bold'>STEP1 : Take Photo </div>
-                </div>
 
               </>
               :
@@ -86,20 +96,9 @@ function CameraLayout() {
           <div 
             className={`${isMobile ? "h-full ":  "" } flex flex-col w-full mx-auto  items-center md:mt-0 py-1 relative `}
           >
-            <div className=' w-full md:w-auto absolute top-0 left-0 z-10 right-0'>
-             
-              {
-                location.pathname === '/camera' && 
-                  <div className="mt-4  text-white/70 text-xs text-center md:text-left">
-                    <img src="https://moonshine.b-cdn.net/msweb/asusaicamera/images/page_fui01_gif.gif" alt="p01" className='max-w-full hidden md:block  ' /> 
-                  </div>
-              }
-            </div>
-           
-            
+
             <Outlet />
 
-           
             
           </div>
     

@@ -390,7 +390,7 @@ function ReadyToTake({handleBackClick}) {
 
   const [src, { blur }] = useProgressiveImg(process.env.PUBLIC_URL+'/images/camera_page/tiny.jpeg', ResultImage);
   return (
-    <div className='flex flex-col w-full justify-between items-center gap-4  my-10 md:my-0'>
+    <div className='flex flex-col w-full justify-between items-center gap-4  my-10 md:my-0 md:-mt-4'>
 
       
       {notification && (
@@ -402,12 +402,12 @@ function ReadyToTake({handleBackClick}) {
 
 
           <div 
-            className=" relative w-full  md:w-1/2 mx-auto  bg-gray-500 md:aspect-[16/9]"
-            style={{clipPath: 'polygon(5% 0%, 95% 0%, 100% 5%, 100% 95%, 95% 100%, 5% 100%, 0% 95%, 0% 5%)'}}
+            className=" relative w-full  md:w-1/2 mx-auto  bg-gray-500  md:aspect-video"
+            style={{clipPath: 'inset(0 0 0% 0 round 25px)'}}
           >
             <Alert 
               open={isCameraInfo} 
-              className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20 w-10/12  md:w-10/12 mx-auto bg-black p-3 rounded-md  [&>*]:mr-0  " 
+              className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 w-10/12  md:w-10/12 mx-auto bg-black p-3 rounded-md  [&>*]:mr-0  " 
             >
               <div className="flex items-center gap-2 w-full text-sm">
                 <FaInfoCircle size={32} /> <div>Please remove accessories such as glasses and hats, and align your face with the reference line</div>
@@ -459,18 +459,18 @@ function ReadyToTake({handleBackClick}) {
               animate={{ opacity: 1 , x: '-50%', y:0}}
               exit={{ opacity: 0,x:'-50%' ,y:-10}}
               transition={{ duration: 0.2 }}
-              className="absolute -bottom-24 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-10 ">
+              className="absolute -bottom-24 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-10  w-[80%] ">
               <button 
-                className="flex items-center  rounded-full bg-gray-800   p-5 shadow-lg shadow-gray-300/40  "
+                className="flex items-center     h-12"
                 onClick={()=>setImage(null)}
               > 
-                <FaArrowLeft color="" size={24}/>  
+                <img src={process.env.PUBLIC_URL+'/images/btn_back.png'} alt=""  className="h-full"/>
               </button>
               <Link 
                 to={'/templates'} 
-                className="flex items-center  rounded-full bg-[#FF0050]   p-5 shadow-lg shadow-gray-300/40  "
+                className="flex items-center      h-12 "
               > 
-                <FaCheck color="" size={24}/>  
+               <img src={process.env.PUBLIC_URL+'/images/btn_next.png'} alt=""  className="h-full"/>
               </Link>
             </motion.div>
             : 
@@ -480,24 +480,24 @@ function ReadyToTake({handleBackClick}) {
               animate={{ opacity: 1 , x: '-50%',y:-0}}
               exit={{ opacity: 0,x:'-50%',y:-10 }}
               transition={{ duration: 0.2 }}
-              className="absolute -bottom-24 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-3 ">
+              className="absolute -bottom-28 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-4  w-[80%]">
               <button 
-                className="flex items-center  rounded-full bg-gray-800   p-5 shadow-lg shadow-gray-300/40  "
+                className="flex items-center  rounded-full bg-gray-800   "
                 onClick={onBtnClick}
               > 
-                <FaTh color="" size={24}/>  
+                <img src={process.env.PUBLIC_URL+'/images/btn_upload02.png'} alt="" />
               </button>
               <button 
-                className="flex items-center  rounded-full bg-[#FF0050]   p-5 shadow-lg shadow-gray-300/40  "
+                className="flex items-center  rounded-full bg-[#FF0050]    shadow-lg shadow-gray-300/40  "
                 onClick={capture} 
               > 
-                <MdPhotoCamera color="" size={24}/>  
+                <img src={process.env.PUBLIC_URL+'/images/btn_camera01.png'} alt="" />
               </button>
               <button 
-                className="flex items-center  rounded-full bg-gray-800   p-5 shadow-lg shadow-gray-300/40  "
+                className="flex items-center  rounded-full bg-gray-800   shadow-lg shadow-gray-300/40  "
                 onClick={swapCamera} 
               > 
-                <MdCameraswitch color="" size={24}/>  
+                <img src={process.env.PUBLIC_URL+'/images/btn_camera02.png'} alt="" />
               </button>
                 
     
@@ -505,12 +505,12 @@ function ReadyToTake({handleBackClick}) {
             }</>)
            :
             (
-              <motion.div className="absolute -bottom-24 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-3 ">
+              <motion.div className="absolute -bottom-24 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-3 w-14 ">
                 <button 
-                  className="flex items-center  rounded-full bg-[#FF0050]   p-5 shadow-lg shadow-gray-300/40  "
+                  className="flex items-center  rounded-full   "
                   onClick={capture} 
                 > 
-                  <MdPhotoCamera color="" size={24}/>  
+                  <img src={process.env.PUBLIC_URL+'/images/btn_camera01.png'} alt="" />
                 </button>
               </motion.div>
             )
@@ -551,8 +551,8 @@ function ReadyToTake({handleBackClick}) {
         </motion.div>
       }
 
-        <div className="flex flex-col md:flex-row items-center gap-10 mt-10 md:mt-10">
-          <div className="flex flex-col gap-6">
+        <div className="flex flex-col md:flex-row items-center justify-center gap-10 mt-10 md:mt-10 w-[60%] h-14 ">
+          <div className="flex flex-col gap-6 h-full">
             <div className=" relative cursor-pointer hidden " onClick={toggleCamera}>
               <div className='sample-heading-3 w-full h-full absolute top-0 z-10   opacity-0 hover:opacity-100  '></div>
               <div className='bg-gradient-to-b from-[#444] to-[#111] px-10 py-2 border  border-white/30 flex justify-center items-center gap-2 font-roboto' ><FaCamera />{isCameraOpen? 'Turn off camera' : 'Take a picture'}</div>
@@ -565,9 +565,8 @@ function ReadyToTake({handleBackClick}) {
               ref={inputFileRef}
 
             />
-            <div className=" relative hidden md:block" onClick={onBtnClick}>
-              <div className='sample-heading-3 w-full h-full absolute top-0 z-10   opacity-0 hover:opacity-100 cursor-pointer  '></div>
-              <div className='bg-gradient-to-b from-[#444] to-[#111] px-10 py-2 border  border-white/30 flex justify-center items-center gap-2 font-roboto' ><FaUpload />Upload a picture</div>
+            <div className=" relative hidden md:block h-full  " onClick={onBtnClick}>
+              <img src={process.env.PUBLIC_URL+'/images/btn_upload.png'} alt="" className="max-w-full h-full " />
             </div>
 
 
@@ -579,11 +578,10 @@ function ReadyToTake({handleBackClick}) {
                   initial={{ opacity: 0}}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="hidden md:block"
+                  className="hidden md:block h-full"
                 >
                   <Link to={'/templates'} className=" relative">
-                    <div className='sample-heading-3 w-full h-full absolute top-0 z-10   animate-[fadeIn_0.3s_ease-in-out_infinite] hover:animate-none cursor-pointer  '></div>
-                    <div className='bg-gradient-to-b bg-[#FF0050] to-[#000] px-10 py-2 border  border-white/30 flex items-center gap-2 font-roboto' >NEXT <FaArrowAltCircleRight /></div>
+                    <img src={process.env.PUBLIC_URL+'/images/btn_next.png'} alt="" className="max-w-full h-full" />
                   </Link>
                 </motion.div>
               </Suspense>

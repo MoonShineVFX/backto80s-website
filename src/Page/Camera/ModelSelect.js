@@ -19,16 +19,10 @@ import 'swiper/css/navigation';
 // import required modules
 import { EffectCoverflow, Pagination,Navigation } from 'swiper/modules';
 const bannerData = [
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/1.jpg" ,title:'MODULE 1', subtitle:"Introduction to module one",id:'1'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/2.jpg" ,title:'MODULE 2', subtitle:"Introduction to module two",id:'2'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/3.jpg" ,title:'MODULE 3', subtitle:"Introduction to module three",id:'3'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/4.jpg" ,title:'MODULE 4', subtitle:"Introduction to module four",id:'4'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/5.jpg" ,title:'MODULE 5', subtitle:"Introduction to module five",id:'5'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/6.jpg" ,title:'MODULE 6', subtitle:"Introduction to module six",id:'6'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/7.jpg" ,title:'MODULE 7', subtitle:"Introduction to module 7",id:'7'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/8.jpg" ,title:'MODULE 8', subtitle:"Introduction to module 8",id:'8'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/9.jpg" ,title:'MODULE 9', subtitle:"Introduction to module 9",id:'9'},
-  {url:"https://moonshine.b-cdn.net/msweb/asusaicamera/templates/10.jpg" ,title:'MODULE 10', subtitle:"Introduction to module 10",id:'10'},
+  {url:"https://moonshine.b-cdn.net/msweb/backto80s_ai/templates/template01.png" ,title:'MODULE 1', subtitle:"Introduction to module one",id:'1'},
+  {url:"https://moonshine.b-cdn.net/msweb/backto80s_ai/templates/template02.png" ,title:'MODULE 2', subtitle:"Introduction to module two",id:'2'},
+  {url:"https://moonshine.b-cdn.net/msweb/backto80s_ai/templates/template03.png" ,title:'MODULE 3', subtitle:"Introduction to module three",id:'3'},
+  {url:"https://moonshine.b-cdn.net/msweb/backto80s_ai/templates/template04.png" ,title:'MODULE 4', subtitle:"Introduction to module four",id:'4'},
 
  ]
 
@@ -59,7 +53,6 @@ function ModelSelect() {
 
   const handleOpen = () => setShowRender(!showRender);
   const handleImageClick = (index) =>{
-    swiper.slideTo(index)
   }
   const needsCompression = (file, maxSize, maxDimension) => {
     return file.size > maxSize || (file.width > maxDimension || file.height > maxDimension);
@@ -280,49 +273,12 @@ function ModelSelect() {
         :
         <div className="w-[160px] aspect-video flex flex-col mx-auto fixed top-5 right-5 text-xs">Remember to upload a photo</div>
       }
-        <div className='w-full md:w-[80%] mx-auto relative mt-5 md:mt-0'>
-          <Swiper
-            onSwiper={setSwiper}
-            onSlideChange={() => {
-              setCurrentId(String(swiper.activeIndex+1))
-            }}
-            effect={'coverflow'}
-            grabCursor={true}
-            centeredSlides={true}
-            breakpoints={{
-              420: {
-                slidesPerView: 1.5,
-                spaceBetween:10
-              },
-              768: {
-                slidesPerView: 3,
-                spaceBetween:20
-              },
-              1024:{
-                slidesPerView: 3,
-                spaceBetween:20
-              }
-            }}
-            slidesPerView={1.4}
-            coverflowEffect={{
-              rotate: ` ${isMobile?  20 : 0}`,
-              stretch: ` ${isMobile?  10 : 20}`,
-              depth:` ${isMobile?  500 : 500}`,
-              modifier: 1,
-              slideShadows: true,
-            }}
-            pagination={false}
-            navigation={{
-              nextEl: " .slidenext2",
-              prevEl: " .slideprev2"
-            }}
-            modules={[EffectCoverflow, Pagination,Navigation]}
-            className="mySwiper"
-          >
+        <div className='w-full md:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
+
             {
               bannerData?.map((item,index)=>{
                 return(
-                  <SwiperSlide key={'tf'+index}>
+                  <div key={'tf'+index} className=' '>
                     <div className=' relative '>
                       <div className=' relative w-full'>
                         <img 
@@ -349,32 +305,24 @@ function ModelSelect() {
 
                     </div>
 
-                  </SwiperSlide>
+                  </div>
                 )
               })
             } 
 
 
-          </Swiper>
-          <div className='w-[110%] mx-auto gap-10 justify-between hidden  md:flex absolute top-[40%] -left-[4%] '>
-            <img src={process.env.PUBLIC_URL+'/images/arrow_left.png'} alt=""  className="slideprev2 cursor-pointer " 
-     
-            />
-            <img src={process.env.PUBLIC_URL+'/images/arrow_right.png'} alt=""  className="slidenext2 cursor-pointer " 
+        
 
-            />
-          </div>
     
         </div>
         {beforeImage? 
-          <div className=" relative mt-8 md:mt-4 cursor-pointer" onClick={onBtnClick}>
-            <div className='sample-heading-3 w-full h-full absolute top-0 z-10   animate-[fadeIn_0.3s_ease-in-out_infinite] hover:animate-none   '></div>
-            <div className='bg-gradient-to-b bg-[#FF0050] to-[#000] px-10 py-2 border  border-white/30 flex items-center gap-2 font-roboto' >Start creating</div>
+          <div className=" relative mt-8 md:mt-8 cursor-pointer h-14" onClick={onBtnClick}>
+            <img src={process.env.PUBLIC_URL+'/images/btn_create.png'} alt="" className="max-w-full h-full" />
           </div>
           :
           <div className=" relative mt-8 md:mt-4 cursor-default" onClick={onBtnClick}>
-            <div className='bg-gradient-to-b bg-[#888] to-[#000] px-10 py-2 border  border-white/30 flex items-center gap-2  font-roboto' >No images found for operation.</div>
-            <div className='text-sm font-normal text-white/60 text-center mt-3'>Please take a new photo or upload the image.</div>
+            <div className='bg-[#FF3976]/80  px-10 py-2 border  border-white/30 flex items-center gap-2  font-roboto' >No images found for operation.</div>
+            <div className='text-sm font-normal text-[#FF3976] text-center mt-3'>Please take a new photo or upload the image.</div>
           </div>
         }
 
