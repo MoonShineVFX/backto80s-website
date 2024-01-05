@@ -78,7 +78,7 @@ function CameraLayout() {
                   <div className='text-[#FF0050] text-base font-bold bg-[#FFF7BB] border-[#111111] border rounded-full  px-3 py-1 ml-2'>STEP1 : Take Photo </div>
                 </div>
                 <Link to='/' className=" " >
-                  <Button variant="text" className="flex items-center gap-3 text-[#FF3976] p-0 mb-2text-2xl font-extrabold  mt-2 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]">
+                  <Button variant="text" className="flex items-center gap-3 text-[#FF3976] p-0 mb-2 text-2xl font-extrabold  mt-2 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]">
                     <FaArrowLeft size={15} className='ml-2' />
                     Back 
                   </Button>
