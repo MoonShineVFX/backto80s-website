@@ -10,7 +10,7 @@ function RenderLayout() {
     <div 
       className='min-h-[100vh] relative bg-black text-white bg-no-repeat bg-center bg-cover '
       style={{
-        backgroundImage: `url('https://moonshine.b-cdn.net/msweb/backto80s_ai/bg01.png')`,
+        backgroundImage: `url('https://r2.web.moonshine.tw/msweb/backto80s_ai/bg01.png')`,
       }}
     > 
 
@@ -20,7 +20,7 @@ function RenderLayout() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/logo.png" alt="" />
+            <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
           </motion.div>
         <div className='w-full  px-0 md:px-12 pt-4 md:pt-10 flex flex-col '>
           <div className='flex justify-between items-start md:h-10 px-10 md:px-0 flex-col md:flex-row'>

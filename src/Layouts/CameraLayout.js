@@ -55,7 +55,7 @@ function CameraLayout() {
     <div 
       className='min-h-[100vh] h-screen md:h-auto relative  text-white bg-no-repeat bg-cover bg-center z-10'
       style={{
-        backgroundImage: `url('https://moonshine.b-cdn.net/msweb/backto80s_ai/bg01.png')`,
+        backgroundImage: `url('https://r2.web.moonshine.tw/msweb/backto80s_ai/bg01.png')`,
       }}
     >   
         {location.pathname === '/camera' &&
@@ -65,7 +65,7 @@ function CameraLayout() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/logo.png" alt="" />
+            <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
           </motion.div>
         }
         <div className='w-full md:aspect-[14/6] flex flex-col h-full md:h-auto justify-between  px-0 md:px-12 pt-4 md:pt-1 relative'>
@@ -110,7 +110,7 @@ function CameraLayout() {
       {location.pathname === '/' &&
         <div 
           
-          className='bg-black/10 absolute w-full h-screen top-0 -z-10  overflow-hidden'
+          className='bg-black/0 absolute w-full h-full top-0 -z-10  overflow-hidden'
         >
           {images.map((image,index)=>{
             const offsetX = (position.x + index) / (index+2); // 使用索引来产生不同的偏移

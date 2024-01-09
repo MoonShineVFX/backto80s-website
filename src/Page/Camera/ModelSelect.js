@@ -6,30 +6,23 @@ import { Button,Checkbox,Typography,Spinner } from "@material-tailwind/react";
 import { FaArrowLeft,FaCameraRetro,FaCheck } from "react-icons/fa";
 import { GiCheckMark } from "react-icons/gi";
 import { motion, AnimatePresence } from "framer-motion";
-import {getUsernameFromCookie} from '../../Helper/Helper'
+import {getUsernameFromCookie,getRandomUniqueNumbers} from '../../Helper/Helper'
 import Resizer from "react-image-file-resizer";
-// Import Swiper React components
-import { Swiper, SwiperSlide,useSwiper } from 'swiper/react';
-
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/effect-coverflow';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-// import required modules
-import { EffectCoverflow, Pagination,Navigation } from 'swiper/modules';
+import TiltCard from '../Components/TiltCard';
 const bannerData = [
-  {url:"https://moonshine.b-cdn.net/msweb/backto80s_ai/templates/template01.png" ,title:'MODULE 1', subtitle:"Introduction to module one",id:'1'},
-  {url:"https://moonshine.b-cdn.net/msweb/backto80s_ai/templates/template02.png" ,title:'MODULE 2', subtitle:"Introduction to module two",id:'2'},
-  {url:"https://moonshine.b-cdn.net/msweb/backto80s_ai/templates/template03.png" ,title:'MODULE 3', subtitle:"Introduction to module three",id:'3'},
-  {url:"https://moonshine.b-cdn.net/msweb/backto80s_ai/templates/template04.png" ,title:'MODULE 4', subtitle:"Introduction to module four",id:'4'},
+  {url:"https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/template01.png" ,title:'MODULE 1', subtitle:"Introduction to module one",id:'1'},
+  {url:"https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/template02.png" ,title:'MODULE 2', subtitle:"Introduction to module two",id:'2'},
+  {url:"https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/template03.png" ,title:'MODULE 3', subtitle:"Introduction to module three",id:'3'},
+  {url:"https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/template04.png" ,title:'MODULE 4', subtitle:"Introduction to module four",id:'4'},
 
  ]
+
 
 function ModelSelect() {
   const storedUsername = getUsernameFromCookie();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [sourceImage ,setSourceImage ] = useState(null)
+  const [taskStatus, setTaskStatus] = useState(Array(4).fill('Waiting')); // 任務初始狀態為 'Waiting'
   const handleResize = () => {
     setIsMobile(window.innerWidth < 768);
   };
@@ -43,6 +36,7 @@ function ModelSelect() {
   const { beforeImage } = useImage();
   const [swiper, setSwiper] = useState(null);
   const [currentId , setCurrentId] = useState('1')
+  const [currentIndex , setCurrentIndex] = useState(0)
   // console.log(currentId)
   const [msg,setMsg] = useState('')
   
@@ -53,6 +47,8 @@ function ModelSelect() {
 
   const handleOpen = () => setShowRender(!showRender);
   const handleImageClick = (index) =>{
+    console.log(index)
+    setCurrentIndex(index)
   }
   const needsCompression = (file, maxSize, maxDimension) => {
     return file.size > maxSize || (file.width > maxDimension || file.height > maxDimension);
@@ -75,7 +71,9 @@ function ModelSelect() {
   }
 
   const onBtnClick= async ()=>{
-    
+    //todo 娶四個數字  1-91
+    // getRandomUniqueNumbers(43,1,91)
+   
     if (!beforeImage) {
       setMsg('Error: Image must be taken or uploaded first.')
       return
@@ -85,75 +83,139 @@ function ModelSelect() {
       setMsg('Error: A mod must be selected.')
       return
     }
+
+    try{
       setMsg(null)
       setMsg('Picture uploading…..')
       setIsRender(true)
 
-    
-    // setStartRender(true)
-    //fetch API 上傳運算
-    //POST https://faceswap.rd-02f.workers.dev/images 上傳圖片
-    //GET https://faceswap.rd-02f.workers.dev/images/<id> 取得圖片
-    var file = dataURLtoFile(beforeImage,'image.jpg')
-    const { width, height } = await getImageDimensions(file);
-    console.log(width, height)
+      const imageUrls = getRandomUniqueNumbers(4, 1, 91).map(
+        (num) => `https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/${num}.jpg`
+      );
+      //blob:https://web-r2.moonshine.tw/22837887-432d-4d0e-ac94-85ab193ba1b1
+      console.log(imageUrls)
+  
+      
+      // setStartRender(true)
+      //fetch API 上傳運算
+      //POST https://faceswap.rd-02f.workers.dev/images 上傳圖片
+      //GET https://faceswap.rd-02f.workers.dev/images/<id> 取得圖片
+      var file = dataURLtoFile(beforeImage,'image.jpg')
+      const { width, height } = await getImageDimensions(file);
+      console.log(width, height)
+  
+      
+      //容量 尺寸
+      let compressFiles;
+      if(needsCompression(file, 1 * 1024 * 1024, 1200)) {
+  
+        // console.log('需要壓縮')
+        setMsg('Compressing image.')
+        compressFiles = await resizeFile(file);
+        await setSourceImage(compressFiles)
+      }else{
+        compressFiles = file
+        await setSourceImage(compressFiles)
+      }
+
+      await uploadAndAwaitResult(imageUrls,compressFiles)
 
     
-    //容量 尺寸
-    let compressFiles;
-    if(needsCompression(file, 1 * 1024 * 1024, 1200)) {
+    }catch{
 
-      // console.log('需要壓縮')
-      setMsg('Compressing image.')
-      compressFiles = await resizeFile(file);
-      await setSourceImage(compressFiles)
-    }else{
-      compressFiles = file
-      await setSourceImage(compressFiles)
     }
 
-    const formData = new FormData();
-    formData.append('source_image', compressFiles); 
-    formData.append("command_type", currentId);
-  
-    fetch('https://faceswap.rd-02f.workers.dev/images', {
-      method: 'POST',
-      body: formData,
-      redirect: 'follow'
-    })
-    .then(response => {
-      console.log(response)
-      if(response.ok){
 
-        return response.json()
-      }else{
-        setMsg('Error:please upload the image again.')
-      }
+    // const formData = new FormData();
+    // formData.append('source_image', compressFiles); 
+    // formData.append("command_type", currentId);
+  
+    // fetch('https://faceswap.rd-02f.workers.dev/images', {
+    //   method: 'POST',
+    //   body: formData,
+    //   redirect: 'follow'
+    // })
+    // .then(response => {
+    //   console.log(response)
+    //   if(response.ok){
+
+    //     return response.json()
+    //   }else{
+    //     setMsg('Error:please upload the image again.')
+    //   }
      
-    })
-    .then(responseData => {
-      // console.log(responseData)
+    // })
+    // .then(responseData => {
+    //   // console.log(responseData)
+    //   if(responseData.message){
+    //     setMsg('Error:please upload the image again.')
+    //     return
+    //   }
+    //   setRenderedData(responseData)
+    //   setIsRender(true)
+    //   setMsg(null)
+      
+    //   setTimeout(async() => {
+    //     setMsg('Please wait for the result')
+    //     await getResulImage(responseData.id,compressFiles)
+    //   }, 500);
+
+
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
+
+
+  }
+  //TODO 從上面執行 
+  const uploadAndAwaitResult = async (imageUrls,compressFiles)=>{
+    for (let i = 0; i < imageUrls.length; i++) {
+      const imageUrl = imageUrls[i];
+
+      setTaskStatus((prevStatus) => {
+        const newStatus = [...prevStatus];
+        newStatus[i] = 'Uploading...';
+        return newStatus;
+      });
+
+      const formData = new FormData();
+      formData.append('source_image', beforeImage);
+      formData.append('command_type', imageUrl);
+
+      const response = await fetch('https://faceswap.rd-02f.workers.dev/images', {
+        method: 'POST',
+        body: formData,
+        redirect: 'follow',
+      });
+
+      if (!response.ok) {
+        setMsg('Error:please upload the image again.')
+        throw new Error('Image upload failed.');
+      }
+  
+     
+
+
+      const responseData = await response.json();
+      console.log(responseData);
+
       if(responseData.message){
         setMsg('Error:please upload the image again.')
         return
       }
-      setRenderedData(responseData)
-      setIsRender(true)
-      setMsg(null)
-      
-      setTimeout(async() => {
-        setMsg('Please wait for the result')
-        await getResulImage(responseData.id,compressFiles)
-      }, 500);
 
+      await new Promise((resolve) => setTimeout(resolve, 300));
 
-    })
-    .catch(error => {
-      console.error(error);
-    });
+      setTaskStatus((prevStatus) => {
+        return prevStatus.map((status, index) =>
+          index === i ? 'Image uploaded, Waiting for result...' : status
+        );
+      });
 
-
+    }
   }
+
   let source;
   const getResulImage =  async (id,sourceImg) =>{
 
@@ -274,28 +336,22 @@ function ModelSelect() {
         <div className="w-[160px] aspect-video flex flex-col mx-auto fixed top-5 right-5 text-xs">Remember to upload a photo</div>
       }
         <div className='w-full md:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
-
             {
               bannerData?.map((item,index)=>{
                 return(
-                  <div key={'tf'+index} className=' '>
+                  <div key={'tf'+index} className=' cursor-pointer '>
                     <div className=' relative '>
-                      <div className=' relative w-full'>
-                        <img 
-                          src={item.url+'?width=410'} 
-                          alt="slide" 
-                          className={` max-w-full hover:brightness-110 rounded-md transition-all ${currentId === item.id ? 'drop-shadow-[0px_10px_15px_rgba(255,255,255,0.55)] brightness-110 ' : ''}`}
-                          onClick={()=>{
-                            handleImageClick(index)
-                          }}
+                      <div 
+                        className={currentId === item.id && ' -translate-y-12 ' + ' relative w-full transition-all duration-1000' }
+                        onClick={()=>{
+                          handleImageClick(index)
+                          setCurrentId(String(index+1))
+                        }}
+                      >
+                        <TiltCard 
+                          imgUrl={item.url}
                         />
-                        <div className='w-[94%] absolute top-2 -left-5 z-10 pointer-events-none hidden'>
-                          <img src={process.env.PUBLIC_URL+'/images/image_border.png'} alt="" className='max-w-full w-full ' />
 
-                        </div>
-                        {
-                          currentId === item.id && <div className='absolute top-0 right-0 text-[#AD86E5]'><GiCheckMark size={34}  className=' ' /></div>
-                        }
                       </div>
 
                       <div className=' absolute -bottom-2 -left-10 z-20 bg-gradient-to-r p-2 from-black/90 via-black/70 hidden '>
@@ -328,34 +384,32 @@ function ModelSelect() {
 
 
         {isRender && 
-          <div className='fixed  inset-0 w-full h-screen bg-black/50 z-30 backdrop-blur-sm'>
+          <div className='fixed  inset-0 w-full h-screen bg-white/50 z-30 backdrop-blur-sm'>
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1}}
             exit={{ opacity: 0 }}
             className=' absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full'
           >
-            <div className='w-[90%] md:w-[400px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 '>
-              <img src={process.env.PUBLIC_URL+'/images/loading.png'} alt="" className='animate-spin'/>
+            <div className='w-full  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 '>
+              <img src={process.env.PUBLIC_URL+'/images/icon_ ribbon02.png'} alt="" className=''/>
             </div>
             
 
 
-            <div className='w-[75%] md:w-[340px] mx-auto'>
-              <div className='pt-[100%] relative border border-red-500 rounded-full overflow-hidden'>
-                <img src={beforeImage} alt="Selected"  className=" brightness-[0.2] absolute aspect-square top-0 left-0 object-cover w-full h-full rounded-full  " />
-                <div className='absolute bottom-10 left-1/2 -translate-x-1/2  z-40 w-full text-center '>
+            <div className='mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+              <div className=' relative w-[75%] md:w-[280px] mt-24 mx-auto '>
+                <img src={bannerData[currentIndex].url} alt="Selected"  className=" max-w-full h-fulll  " />
+
+              </div>
+              <div className=' relative left-1/2 -translate-x-1/2  z-40 w-full text-center '>
                   {msg && !msg.includes('錯誤') && (
                     <motion.div 
                       initial={{ opacity: 0,y:10 }}
                       animate={{ opacity: 1,y:0}}
                       exit={{ opacity: 0,y:10}}
-                      className='text-white/80 '>{msg}</motion.div>
+                      className='text-[#FF0050] text-3xl font-extrabold  mt-8 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]'>{msg}</motion.div>
                   )}
-                  {
-                    storedUsername && msg && !msg.includes('錯誤') &&
-                    <div className="  text-white/70 text-xs z-10 ">Player name：{storedUsername}</div>
-                  }
                   {
                     msg && msg.includes('錯誤') &&
                       <div  className='mt-4 p-2 bg-[#FF0050]/70 flex flex-col items-center'>
@@ -366,7 +420,6 @@ function ModelSelect() {
                   }
 
                 </div>
-              </div>
             </div>
 
           </motion.div>

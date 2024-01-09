@@ -398,11 +398,8 @@ function ReadyToTake({handleBackClick}) {
       )}
       {isCameraOpen ? 
         <div className="flex  items-center gap-4 relative w-full">
-            
-
-
           <div 
-            className=" relative w-full  md:w-1/2 mx-auto  bg-gray-500  md:aspect-video"
+            className=" relative md:w-3/5   mx-auto  bg-gray-500   "
             style={{clipPath: 'inset(0 0 0% 0 round 25px)'}}
           >
             <Alert 
@@ -448,7 +445,7 @@ function ReadyToTake({handleBackClick}) {
             )}
 
             
-           {isMobile ? <Webcam ref={webcamRef} facingMode= 'user' mirrored={videoConstraints.facingMode === 'user' ? true: false} videoConstraints={videoConstraints} /> :  <Webcam ref={webcamRef} mirrored={true} width={1000}    />} 
+           {isMobile ? <Webcam ref={webcamRef} facingMode= 'user' mirrored={videoConstraints.facingMode === 'user' ? true: false} videoConstraints={videoConstraints} /> :  <Webcam ref={webcamRef} mirrored={true} width={'100%'} height={'60%'}     />} 
           </div>
           {
            isMobile ?

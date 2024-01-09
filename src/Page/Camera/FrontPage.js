@@ -49,7 +49,7 @@ function FrontPage({handleClick}) {
 
 
   return (
-        <div className='flex flex-col justify-between items-center md:justify-center w-full px-0 py-[5%]  '>
+        <div className='flex flex-col justify-between items-center md:justify-center w-full px-0 pt-[5%]  '>
           {notification && (
             <CustomAlert message={notification} onClose={() => setNotification(null)} />
           )}
@@ -64,20 +64,20 @@ function FrontPage({handleClick}) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/logo.png" alt="" />
+              <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className='mx-auto relative overflow-hidden z-0'
+              className='mx-auto relative overflow-hidden z-0  w-2/5 md:w-4/12'
             >
 
               <img
-                src= {'https://moonshine.b-cdn.net/msweb/backto80s_ai/bg-transparent.png?width=330'}
+                src= {'https://r2.web.moonshine.tw/msweb/backto80s_ai/bg-transparent.png?width=330'}
                 alt="card-image"
-                className='max-w-full w-full relative  z-10'
+                className='max-w-full w-full relative  z-10 '
 
               />
               <div className=' absolute bottom-0 left-1/2 -translate-x-1/2 w-3/5  z-0  overflow-hidden'>
@@ -100,12 +100,12 @@ function FrontPage({handleClick}) {
                 >
                 </motion.div>
                 <div className='w-full'>
-                  <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/mirror01.png" alt="" />
+                  <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/mirror01.png" alt="" className='w-full' />
                 </div>
 
-                <div className={`${isHovered ? 'opacity-100' : 'opacity-0' } transition-all duration-500  absolute top-0 left-0 z-0  `}>
+                <div className={`${isHovered ? 'opacity-100' : 'opacity-0' } transition-all duration-500  absolute top-0 left-0 z-0 w-full `}>
                   <img
-                    src= {'https://moonshine.b-cdn.net/msweb/backto80s_ai/mirror02.png?width=320'}
+                    src= {'https://r2.web.moonshine.tw/msweb/backto80s_ai/mirror02.png?width=320'}
                     alt="card-image"
                     className='max-w-full w-full  '
                   />
@@ -123,7 +123,7 @@ function FrontPage({handleClick}) {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
-                <img src="https://moonshine.b-cdn.net/msweb/backto80s_ai/btn_start.png" alt="start"  className=''/>
+                <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/btn_start.png" alt="start"  className=''/>
               </div>
 
             </div>
