@@ -61,7 +61,7 @@ function Result({open ,handleOpen,renderedResult,username,taskStatus}) {
                       taskStatus.map((item,index)=>{
                         if(item.finished === 0){
                           return(
-                            <div className='flex flex-col justify-center items-center  '>
+                            <div key={'not'+index} className='flex flex-col justify-center items-center  '>
                               <div className='w-full h-full  relative  overflow-hidden rounded-xl  '>
                                 <div className='w-full h-full bg-gray-100 z-0  aspect-[127/158] '></div>
                                 <div 
@@ -80,7 +80,7 @@ function Result({open ,handleOpen,renderedResult,username,taskStatus}) {
                           )
                         }else{
                           return(
-                            <div className='flex flex-col justify-center items-center  '>
+                            <div key={'finish'+index} className='flex flex-col justify-center items-center  '>
                               <motion.img 
                                 initial={{ opacity: 0}}
                                 animate={{ opacity: 1}}
