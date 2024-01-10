@@ -187,8 +187,6 @@ function ModelSelect() {
             return;
           }
 
-
-  
           // 上传成功，等待结果
           await new Promise((innerResolve) => setTimeout(innerResolve, 300));
           
@@ -204,26 +202,23 @@ function ModelSelect() {
     });
   
     try {
+      setTaskStatus(statusList);
+
       const results = await Promise.all(uploadPromises);
       console.log('All uploads completed:', results);
       // 在这里处理所有上传任务完成后的逻辑
+      const taskStatusList = [...statusList];
 
       for (let i = 0; i < results.length; i++) {
         const result = results[i];
-        const status = statusList[i];
-  
+        const status = taskStatusList[i];
+    
         if (result && result.id) {
           // 调用 getResulImage，注意传入对应的 id 和 sourceImg
-          const resultImage = await getResulImage(result.id, compressFiles);
-          
-          // 更新对应任务的状态
-          status.finished = 1;
-          status.img = resultImage; // 假设 resultImage 是返回的结果图片URL
-          status.status = 'Result received';
+          // 不再直接更新状态，而是调用递归函数处理
+          processTasks(taskStatusList, i);
         }
-      }
-      
-      setTaskStatus(statusList);
+      }      
 
     } catch (error) {
       console.error('Upload error:', error);
@@ -232,46 +227,88 @@ function ModelSelect() {
 
 
   }
+  // 送出時 一一上傳四張模組 等於有四個任務id  依序拿圖
+  const processTasks = async (tasks, index) => {
+    if (index >= tasks.length) {
+      // 所有任务都已处理完毕，退出递归
+      return;
+    }
+  
+    const task = tasks[index];
+    const resultImage = await getResulImage(task.id);
+    if (resultImage.restarted>=2){
+      setMsg('Timeout error, please upload the image again.')
+      return
+    }
+    if (resultImage.finished === 0) {
+      // 如果沒有 source_image，一段時間再嘗試
+      setTimeout(() => {
+        processTasks(tasks, index);
+      }, 1000); // 假设间隔为1秒，你可以根据需要调整
+    } else {
+      // 更新任務狀態
+      task.finished = 1;
+      task.img = resultImage.generations[0].img;
+      task.status = 'Result received';
+      setTaskStatus([...tasks]);
+  
+      // 處理下一任務
+      processTasks(tasks, index + 1);
+    }
+  };
 
   let source;
-  const getResulImage =  async (id,sourceImg) =>{
-
-    if(sourceImg !== undefined ){
-      console.log('save')
-      source = sourceImg
+  const getResulImage =  async (id) =>{
+    try {
+      const response = await fetch(apiUrl + id, {
+        method: 'GET',
+      });
+      const responseData = await response.json();
+  
+      // 在此处返回 responseData
+      return responseData;
+    } catch (error) {
+      console.error(error);
+      // 返回一个错误或默认值，取决于你的需求
+      return { error: 'An error occurred' };
     }
+    
+    // if(sourceImg !== undefined ){
+    //   console.log('save')
+    //   source = sourceImg
+    // }
 
     // let reid = id
-    await fetch(apiUrl+id, {
-      method: 'GET',
-    })
-    .then(response => response.json())
-    .then(responseData => {
-      console.log(responseData)
+    // await fetch(apiUrl+id, {
+    //   method: 'GET',
+    // })
+    // .then(response => response.json())
+    // .then(responseData => {
+    //   console.log(responseData)
      
-      setTimeout(async() => {
-        if(responseData.restarted>=2){
-          setMsg('Timeout error, please upload the image again.')
-          return
-        }
-        if(responseData.finished === 0){
-          getResulImage(id)
-        }
+      
+    //   if(responseData.restarted>=2){
+    //     setMsg('Timeout error, please upload the image again.')
+    //     return
+    //   }
+    //   // if(responseData.finished === 0){
+    //   //   getResulImage(id)
+    //   // }
 
-        if(responseData.finished ===1){
-          setRenderedResult(responseData)
-          setShowRender(true)
-          setIsRender(false)
-          setMsg('')
-          await updatedData(id,responseData.generations[0].img,source )
-          return
-        }
-      }, 1000);
+    //   if(responseData.finished ===1){
+    //     setRenderedResult(responseData)
+    //     setShowRender(true)
+    //     setIsRender(false)
+    //     setMsg('')
+    //     // await updatedData(id,responseData.generations[0].img,source )
+    //     return
+    //   }
+   
 
-    })
-    .catch(error => {
-      console.error(error);
-    });
+    // })
+    // .catch(error => {
+    //   console.error(error);
+    // });
 
   }
   const updatedData = async (id,url,sourceImage)=>{
@@ -352,14 +389,14 @@ function ModelSelect() {
         :
         <div className="w-[160px] aspect-video flex flex-col mx-auto fixed top-5 right-5 text-xs">Remember to upload a photo</div>
       }
-        <div className='w-full md:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
+        <div className='w-[84%] md:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
             {
               bannerData?.map((item,index)=>{
                 return(
                   <div key={'tf'+index} className=' cursor-pointer '>
                     <div className=' relative '>
                       <div 
-                        className={currentId === item.id ? ' -translate-y-12 ' : '  ' + ' relative w-full transition-all duration-1000' }
+                        className={currentId === item.id ? ' scale-110 md:scale-100 md:-translate-y-12 ' : '  ' + ' relative w-full transition-all duration-1000' }
                         onClick={()=>{
                           handleImageClick(index)
                           setCurrentId(String(index+1))
@@ -415,24 +452,55 @@ function ModelSelect() {
 
 
             <div className='mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-              <div className=' relative w-[75%] md:w-[280px] mt-24 mx-auto '>
-                <img src={bannerData[currentIndex].url} alt="Selected"  className=" max-w-full h-fulll  " />
+              <div className=' relative w-[75%] md:w-[280px] mt-[45%] mx-auto '>
+                <motion.img 
+                  initial={{ opacity: 0,y:10 }}
+                  animate={{ opacity: 1,y:0}}
+                  exit={{ opacity: 0,y:10}} src={bannerData[currentIndex].url} alt="Selected"  className=" max-w-full h-fulll  " />
 
               </div>
               <div className=' relative left-1/2 -translate-x-1/2  z-40 w-full text-center '>
-                  {msg && !msg.includes('錯誤') && (
+                  {msg && !msg.includes('Error') && (
                     <motion.div 
                       initial={{ opacity: 0,y:10 }}
                       animate={{ opacity: 1,y:0}}
                       exit={{ opacity: 0,y:10}}
-                      className='text-[#FF0050] text-2xl font-extrabold  mt-8 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]'>{msg}</motion.div>
+                      className='text-[#FF0050] md:text-2xl font-extrabold  mt-4 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]'>
+                        {msg}
+
+                        <div className='md:w-1/2 flex gap-2 items-center justify-center mx-auto mt-4'>
+                          <div className=' relative'>
+                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' />
+                          </div>
+                          <div className=' relative'>
+                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'200ms'}} />
+                          </div>
+                          <div className=' relative'>
+                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'400ms'}} />
+                          </div>
+                          <div className=' relative'>
+                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'600ms'}} />
+                          </div>
+                          <div className=' relative'>
+                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'800ms'}} />
+                          </div>
+                          
+
+                        </div>
+                      </motion.div>
                   )}
+
                   {
-                    msg && msg.includes('錯誤') &&
-                      <div  className='mt-4 p-2 bg-[#FF0050]/70 flex flex-col items-center'>
-                        <div className='text-white '>{msg}</div>
-                        <div className='text-xs text-white/90 mt-2'>Unsupported format or unclear image.</div>
-                        <Link to='/camera' className=' px-3  py-2 text-xs rounded-lg border-white/50 my-3 bg-black/20 hover:bg-black/40 font-roboto '>Back</Link> 
+                    msg && msg.includes('Error') &&
+                      <div  className='mt-4 p-2 /70 flex flex-col items-center'>
+                        <div className='text-[#FF0050] text-lg md:text-2xl font-extrabold  mt-4 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)] '>{msg}</div>
+                        <div className='md:text-lg  text-[#FF0050] mt-2'>Unsupported format or unclear image.</div>
+                        <Link to='/camera' className=' px-3  py-2 text-xs text-[#FFf] rounded-lg border-white/50 my-3 bg-[#FF0050]/20 hover:bg-[#FF0050]/40 font-roboto '>Back</Link> 
                       </div>
                   }
 
@@ -446,7 +514,7 @@ function ModelSelect() {
 
         
       
-      <Result open={!showRender} handleOpen={handleOpen} renderedResult={renderedResult} username={storedUsername} taskStatus={taskStatus}/>
+      <Result open={showRender} handleOpen={handleOpen} renderedResult={renderedResult} username={storedUsername} taskStatus={taskStatus}/>
       
     </div>
   )

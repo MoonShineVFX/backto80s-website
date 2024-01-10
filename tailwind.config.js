@@ -8,7 +8,7 @@ module.exports = withMT({
     extend: {
       keyframes: {
         fadeIn: {
-          '0%': { opacity: '0' },
+          '0%': { opacity: '0.4' },
           '100%': { opacity: '1' },
         },
         shimmer: {
@@ -16,6 +16,10 @@ module.exports = withMT({
             transform: "translateX(100%)",
           },
         },
+        fadeInOut: {
+          '0%, 100%': {  opacity: '0' },
+          '50%': { opacity: '1' },
+        }
       },
       fontFamily: {
         'roboto': ['Roboto', 'sans-serif'],
