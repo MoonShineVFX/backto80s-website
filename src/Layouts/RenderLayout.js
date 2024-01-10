@@ -10,7 +10,7 @@ function RenderLayout() {
     <div 
       className='min-h-[100vh] relative bg-black text-white bg-no-repeat bg-center bg-cover '
       style={{
-        backgroundImage: `url('https://r2.web.moonshine.tw/msweb/backto80s_ai/bg01.png')`,
+        backgroundImage: `url('https://r2.web.moonshine.tw/opt/lg/msweb/backto80s_ai/bg01.png')`,
       }}
     > 
 

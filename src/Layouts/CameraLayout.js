@@ -55,7 +55,7 @@ function CameraLayout() {
     <div 
       className='min-h-[100vh] h-screen md:h-auto relative  text-white bg-no-repeat bg-cover bg-center z-10'
       style={{
-        backgroundImage: `url('https://r2.web.moonshine.tw/msweb/backto80s_ai/bg01.png')`,
+        backgroundImage: `url('https://r2.web.moonshine.tw/opt/lg/msweb/backto80s_ai/bg01.png')`,
       }}
     >   
         {location.pathname === '/camera' &&
@@ -117,6 +117,7 @@ function CameraLayout() {
             const offsetY = (position.y + index) / (index+2); 
             return(
               <div 
+                key={'ic0'+index}
                 onMouseMove={(e) => handleMouseMove(e)} 
                 className={`absolute`}
                 style={{

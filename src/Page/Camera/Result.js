@@ -9,8 +9,8 @@ import {
   Spinner,
   IconButton
 } from "@material-tailwind/react";
-import QRCode from "react-qr-code";
-function Result({open ,handleOpen,renderedResult,username}) {
+import { motion, AnimatePresence } from "framer-motion";
+function Result({open ,handleOpen,renderedResult,username,taskStatus}) {
 
   const downloadImage = (imgurl) => {
     const imageUrl = imgurl
@@ -65,15 +65,53 @@ function Result({open ,handleOpen,renderedResult,username}) {
         <DialogBody className='p-0 m-0'>
           <div className='flex flex-col md:flex-col justify-center items-center gap-0 '>
 
-            {Object.keys(renderedResult).length > 0 && (
+            {Object.keys(taskStatus).length > 0 && (
               <div className='w-[75%] relative my-10'>
                 <Suspense fallback={<Spinner/>}>
                   <div className='md:hidden text-center  mb-2 text-[#FF0050] font-cachet font-bold'>Press and hold to save photo↓</div>
-                  <div className='grid grid-cols-2 md:grid-cols-4 gap-8'>
-                    <img src={renderedResult.generations[0].img} alt=""  className=' rounded-3xl '/>
-                    <img src={renderedResult.generations[0].img} alt=""  className=' rounded-3xl '/>
-                    <img src={renderedResult.generations[0].img} alt=""  className=' rounded-3xl '/>
-                    <img src={renderedResult.generations[0].img} alt=""  className=' rounded-3xl '/>
+                  <div className='w-full md:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
+                    {Object.keys(taskStatus).length > 0 ?
+              
+                      taskStatus.map((item,index)=>{
+                        if(item.finished === 0){
+                          return(
+                            <div className='flex flex-col justify-center items-center  '>
+                              <div className='w-full h-full  relative  overflow-hidden rounded-xl  '>
+                                <div className='w-full h-full bg-gray-100 z-0  '></div>
+                                <div 
+                                  className=" z-10 absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gray-300 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"
+                                >
+                                </div>
+                              </div>
+                              <motion.div 
+                                initial={{ opacity: 0,y:10 }}
+                                animate={{ opacity: 1,y:0}}
+                                exit={{ opacity: 0,y:10}}
+                              >
+                                {item.status}
+                              </motion.div>
+                            </div>
+                          )
+                        }else{
+                          return(
+                            <div className='flex flex-col justify-center items-center '>
+                              <img src={item.img} alt="" className='rounded-xl ' />
+                              <motion.div 
+                                initial={{ opacity: 0,y:10 }}
+                                animate={{ opacity: 1,y:0}}
+                                exit={{ opacity: 0,y:10}}
+                              >
+                                {item.status}
+                              </motion.div>
+
+                            </div>
+                          )
+                        }
+
+                      })
+                      : 
+                      <div>no result or fail </div>
+                    }
                   </div>
 
 

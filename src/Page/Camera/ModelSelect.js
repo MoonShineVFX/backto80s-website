@@ -17,12 +17,37 @@ const bannerData = [
 
  ]
 
-
+const apiUrl = 'https://faceswap.rd-02f.workers.dev/'
 function ModelSelect() {
   const storedUsername = getUsernameFromCookie();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [sourceImage ,setSourceImage ] = useState(null)
-  const [taskStatus, setTaskStatus] = useState(Array(4).fill('Waiting')); // 任務初始狀態為 'Waiting'
+  const [taskStatus, setTaskStatus] = useState([
+    {
+      status: 'ok',
+      id: null,
+      img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/49.jpg',
+      finished: 1,
+    },
+    {
+      status: 'ok',
+      id: null,
+      img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/50.jpg',
+      finished: 1,
+    },
+    {
+      status: 'Waiting for Result...',
+      id: null,
+      img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/49.jpg',
+      finished: 0,
+    } ,
+    {
+      status: 'Waiting for Result...',
+      id: null,
+      img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/49.jpg',
+      finished: 0,
+    }
+  ]); // 任務初始狀態為 'Waiting'
   const handleResize = () => {
     setIsMobile(window.innerWidth < 768);
   };
@@ -124,96 +149,88 @@ function ModelSelect() {
     }catch{
 
     }
-
-
-    // const formData = new FormData();
-    // formData.append('source_image', compressFiles); 
-    // formData.append("command_type", currentId);
-  
-    // fetch('https://faceswap.rd-02f.workers.dev/images', {
-    //   method: 'POST',
-    //   body: formData,
-    //   redirect: 'follow'
-    // })
-    // .then(response => {
-    //   console.log(response)
-    //   if(response.ok){
-
-    //     return response.json()
-    //   }else{
-    //     setMsg('Error:please upload the image again.')
-    //   }
-     
-    // })
-    // .then(responseData => {
-    //   // console.log(responseData)
-    //   if(responseData.message){
-    //     setMsg('Error:please upload the image again.')
-    //     return
-    //   }
-    //   setRenderedData(responseData)
-    //   setIsRender(true)
-    //   setMsg(null)
-      
-    //   setTimeout(async() => {
-    //     setMsg('Please wait for the result')
-    //     await getResulImage(responseData.id,compressFiles)
-    //   }, 500);
-
-
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-
-
   }
   //TODO 從上面執行 
   const uploadAndAwaitResult = async (imageUrls,compressFiles)=>{
-    for (let i = 0; i < imageUrls.length; i++) {
-      const imageUrl = imageUrls[i];
-
-      setTaskStatus((prevStatus) => {
-        const newStatus = [...prevStatus];
-        newStatus[i] = 'Uploading...';
-        return newStatus;
-      });
-
-      const formData = new FormData();
-      formData.append('source_image', beforeImage);
-      formData.append('command_type', imageUrl);
-
-      const response = await fetch('https://faceswap.rd-02f.workers.dev/images', {
-        method: 'POST',
-        body: formData,
-        redirect: 'follow',
-      });
-
-      if (!response.ok) {
-        setMsg('Error:please upload the image again.')
-        throw new Error('Image upload failed.');
-      }
+    const statusList = imageUrls.map((imageUrl) => ({
+      status: 'Uploading...',
+      id: null,
+      img: '',
+      finished: 0,
+    }));
+    const uploadPromises = imageUrls.map((imageUrl,index) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          // 上传图像的逻辑
+          const formData = new FormData();
+          formData.append('source_image', beforeImage);
+          formData.append('img_url', imageUrl);
   
-     
+          const response = await fetch(apiUrl+'face_swap', {
+            method: 'POST',
+            body: formData,
+            redirect: 'follow',
+          });
+  
+          if (!response.ok) {
+            setMsg('Error:please upload the image again.')
+            reject(new Error('Image upload failed.'));
+            return;
+          }
+  
+          const responseData = await response.json();
+          console.log(responseData);
+  
+          if (responseData.message) {
+            setMsg('Error:please upload the image again.')
+            reject(new Error('Image upload failed.'));
+            return;
+          }
 
 
-      const responseData = await response.json();
-      console.log(responseData);
+  
+          // 上传成功，等待结果
+          await new Promise((innerResolve) => setTimeout(innerResolve, 300));
+          
+          statusList[index].status = 'Image uploaded, Waiting for result...';
+          statusList[index].id = responseData.id;
 
-      if(responseData.message){
-        setMsg('Error:please upload the image again.')
-        return
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      setTaskStatus((prevStatus) => {
-        return prevStatus.map((status, index) =>
-          index === i ? 'Image uploaded, Waiting for result...' : status
-        );
+          resolve(responseData);
+        } catch (error) {
+          setMsg('Error: Image upload failed.');
+          reject(error);
+        }
       });
+    });
+  
+    try {
+      const results = await Promise.all(uploadPromises);
+      console.log('All uploads completed:', results);
+      // 在这里处理所有上传任务完成后的逻辑
 
+      for (let i = 0; i < results.length; i++) {
+        const result = results[i];
+        const status = statusList[i];
+  
+        if (result && result.id) {
+          // 调用 getResulImage，注意传入对应的 id 和 sourceImg
+          const resultImage = await getResulImage(result.id, compressFiles);
+          
+          // 更新对应任务的状态
+          status.finished = 1;
+          status.img = resultImage; // 假设 resultImage 是返回的结果图片URL
+          status.status = 'Result received';
+        }
+      }
+      
+      setTaskStatus(statusList);
+
+    } catch (error) {
+      console.error('Upload error:', error);
+      // 在这里处理上传过程中的错误
     }
+
+
   }
 
   let source;
@@ -225,7 +242,7 @@ function ModelSelect() {
     }
 
     // let reid = id
-    await fetch('https://faceswap.rd-02f.workers.dev/images/'+id, {
+    await fetch(apiUrl+id, {
       method: 'GET',
     })
     .then(response => response.json())
@@ -266,7 +283,7 @@ function ModelSelect() {
     formData.append("username", storedUsername ? storedUsername : ' ');
     formData.append("command_type", currentId);
 
-    await fetch('https://faceswap.rd-02f.workers.dev/swap_data', {
+    await fetch(apiUrl+'swap_data', {
       method: 'POST',
       body: formData,
       redirect: 'follow'
@@ -342,7 +359,7 @@ function ModelSelect() {
                   <div key={'tf'+index} className=' cursor-pointer '>
                     <div className=' relative '>
                       <div 
-                        className={currentId === item.id && ' -translate-y-12 ' + ' relative w-full transition-all duration-1000' }
+                        className={currentId === item.id ? ' -translate-y-12 ' : '  ' + ' relative w-full transition-all duration-1000' }
                         onClick={()=>{
                           handleImageClick(index)
                           setCurrentId(String(index+1))
@@ -408,7 +425,7 @@ function ModelSelect() {
                       initial={{ opacity: 0,y:10 }}
                       animate={{ opacity: 1,y:0}}
                       exit={{ opacity: 0,y:10}}
-                      className='text-[#FF0050] text-3xl font-extrabold  mt-8 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]'>{msg}</motion.div>
+                      className='text-[#FF0050] text-2xl font-extrabold  mt-8 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]'>{msg}</motion.div>
                   )}
                   {
                     msg && msg.includes('錯誤') &&
@@ -429,7 +446,7 @@ function ModelSelect() {
 
         
       
-      <Result open={showRender} handleOpen={handleOpen} renderedResult={renderedResult} username={storedUsername}/>
+      <Result open={!showRender} handleOpen={handleOpen} renderedResult={renderedResult} username={storedUsername} taskStatus={taskStatus}/>
       
     </div>
   )
