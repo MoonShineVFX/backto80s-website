@@ -47,6 +47,14 @@ function FrontPage({handleClick}) {
     };
   }, []);
 
+  const test = async()=>{
+    const res = await fetch('https://backto80s-api.rd-02f.workers.dev/images/25076e68-e2b7-4967-a316-2f4ef262a3dc',{
+    })
+    const responseData = await res.json();
+    console.log('123')
+    console.log(responseData)
+  }
+  // test()
 
   return (
         <div className='flex flex-col justify-between items-center md:justify-center w-full px-0 pt-[5%]  '>

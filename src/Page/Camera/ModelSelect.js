@@ -17,7 +17,9 @@ const bannerData = [
 
  ]
 
-const apiUrl = 'https://faceswap.rd-02f.workers.dev/'
+ let apiurl = 'https://backto80s-api.rd-02f.workers.dev/'
+ let face_swap_url = apiurl + 'face_swap'
+ let getimages_url =  apiurl + 'images/'
 function ModelSelect() {
   const storedUsername = getUsernameFromCookie();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -96,7 +98,7 @@ function ModelSelect() {
   }
 
   const onBtnClick= async ()=>{
-    //todo 娶四個數字  1-91
+    //todo 四個數字  1-91
     // getRandomUniqueNumbers(43,1,91)
    
     if (!beforeImage) {
@@ -163,13 +165,14 @@ function ModelSelect() {
         try {
           // 上传图像的逻辑
           const formData = new FormData();
-          formData.append('source_image', beforeImage);
-          formData.append('img_url', imageUrl);
+          formData.append('source_image', compressFiles);
+          formData.append('swap_image_url', imageUrl);
   
-          const response = await fetch(apiUrl+'face_swap', {
+          const response = await fetch(face_swap_url, {
             method: 'POST',
             body: formData,
-            redirect: 'follow',
+            referrerPolicy:'no-referrer'
+
           });
   
           if (!response.ok) {
@@ -208,6 +211,9 @@ function ModelSelect() {
       console.log('All uploads completed:', results);
       // 在这里处理所有上传任务完成后的逻辑
       const taskStatusList = [...statusList];
+      setShowRender(true)
+
+      console.log(statusList)
 
       for (let i = 0; i < results.length; i++) {
         const result = results[i];
@@ -260,7 +266,7 @@ function ModelSelect() {
   let source;
   const getResulImage =  async (id) =>{
     try {
-      const response = await fetch(apiUrl + id, {
+      const response = await fetch(getimages_url+ id, {
         method: 'GET',
       });
       const responseData = await response.json();
@@ -320,10 +326,11 @@ function ModelSelect() {
     formData.append("username", storedUsername ? storedUsername : ' ');
     formData.append("command_type", currentId);
 
-    await fetch(apiUrl+'swap_data', {
+    await fetch(apiurl+'swap_data', {
       method: 'POST',
       body: formData,
-      redirect: 'follow'
+      redirect: 'follow',
+      mode: 'no-cors'
     })
     .then(response => {
       if(response.status === 200){
