@@ -211,8 +211,8 @@ function ModelSelect() {
       console.log('All uploads completed:', results);
       // 在这里处理所有上传任务完成后的逻辑
       const taskStatusList = [...statusList];
-      setShowRender(true)
-
+        setShowRender(true)
+        setIsRender(false)
       console.log(statusList)
 
       for (let i = 0; i < results.length; i++) {
