@@ -160,6 +160,7 @@ function ModelSelect() {
       img: '',
       finished: 0,
     }));
+    let counterIndex = 0
     const uploadPromises = imageUrls.map((imageUrl,index) => {
       return new Promise(async (resolve, reject) => {
         try {
@@ -182,12 +183,18 @@ function ModelSelect() {
           }
   
           const responseData = await response.json();
+          
           console.log(responseData);
+          
   
           if (responseData.message) {
             setMsg('Error:please upload the image again.')
             reject(new Error('Image upload failed.'));
             return;
+          }
+          if(responseData.id){
+            counterIndex++
+            setMsg(`Flow task ${counterIndex}/${imageUrls.length} uploaded`)
           }
 
           // 上传成功，等待结果
