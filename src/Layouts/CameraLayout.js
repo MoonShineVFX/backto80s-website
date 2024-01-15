@@ -16,14 +16,14 @@ function CameraLayout() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const images = [
-    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon08.png', top:'-19%' ,left:'11%' , width:'18%'},
-    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon01.png', top:'-10%' ,left:'-6%' , width:'23%'},
-    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon02.png', top:'30%' , left:'7%' , width:'12%'},
-    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon03.png', top:'65%' , left:'-6%' , width:'30%'},
-    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon04.png', top:'-15%' ,left:'75%', width:'30%'},
-    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon05.png', top:'25%' , left:'70%', width:'15%'},
-    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon06.png', top:'45%' , left:'76%', width:'18%'},
-    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon07.png', top:'70%' , left:'76%', width:'28%'},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon08.png', top:'-19%' ,left:'11%' ,  width:'18%', mobile:{top:'0%',  left:'-3%',  width:"28%"}},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon01.png', top:'-10%' ,left:'-6%' ,  width:'23%', mobile:{top:'25%', left:'-6%',  width:"33%"}},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon02.png', top:'30%' , left:'7%' ,   width:'12%', mobile:{top:'50%', left:'-1%',  width:"20%"}},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon03.png', top:'65%' , left:'-6%' ,  width:'30%', mobile:{top:'80%', left:'-3%',  width:"45%"}},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon04.png', top:'-15%' ,left:'75%',   width:'30%', mobile:{top:'0%',  left:'75%', width:"35%"}},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon05.png', top:'25%' , left:'70%',   width:'15%', mobile:{top:'25%', left:'75%', width:"35%"}},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon06.png', top:'45%' , left:'76%',   width:'18%', mobile:{top:'50%', left:'73%', width:"34%"}},
+    {url:'https://moonshine.b-cdn.net/msweb/backto80s_ai/icon07.png', top:'70%' , left:'76%',   width:'28%', mobile:{top:'80%', left:'60%', width:"45%"}},
   ]
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const handleMouseMove = (e) => {
@@ -121,9 +121,9 @@ function CameraLayout() {
                 onMouseMove={(e) => handleMouseMove(e)} 
                 className={`absolute`}
                 style={{
-                  top:`${image.top}`,
-                  left:`${image.left}`,
-                  width:`${image.width}`,
+                  top:`${isMobile ? image.mobile.top : image.top }`,
+                  left:`${isMobile ? image.mobile.left :image.left}`,
+                  width:`${isMobile ? image.mobile.width :image.width}`,
                   transform: `translate(${offsetX}px, ${offsetY}px)`,
                 }}
               >

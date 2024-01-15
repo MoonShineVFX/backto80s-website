@@ -63,9 +63,9 @@ function Result({open ,handleOpen,renderedResult,username,taskStatus}) {
                           return(
                             <div key={'not'+index} className='flex flex-col justify-center items-center  '>
                               <div className='w-full h-full  relative  overflow-hidden rounded-xl  '>
-                                <div className='w-full h-full bg-gray-100 z-0  aspect-[127/158] '></div>
+                                <div className='w-full h-full bg-[#fbabc4] z-0  aspect-[127/158] '></div>
                                 <div 
-                                  className=" z-10 absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-gray-300 to-transparent -translate-x-full animate-[shimmer_2s_infinite]"
+                                  className=" z-10 absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-[#f57ea3] to-transparent -translate-x-full animate-[shimmer_2s_infinite]"
                                 >
                                 </div>
                               </div>

@@ -57,29 +57,30 @@ function FrontPage({handleClick}) {
   // test()
 
   return (
-        <div className='flex flex-col justify-between items-center md:justify-center w-full px-0 pt-[5%]  '>
+        <div className='flex flex-col justify-between items-center md:justify-center w-full px-0 pt-[20%] md:pt-[10%]  '>
           {notification && (
             <CustomAlert message={notification} onClose={() => setNotification(null)} />
           )}
-
+          
           <div 
-            className=' relative w-full md:w-4/5 mx-auto flex  text-center '
+            className=' relative w-full md:w-7/12 mx-auto   text-center '
           >
-
+            <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo_m.png" alt="" className='block md:hidden mx-auto my-5' />
             <motion.div 
-              className=' md:my-2 text-gray-200 absolute left-1/2 -translate-x-1/2 w-10/12 z-20'
+              className=' md:my-2 text-gray-200 absolute left-1/2 -translate-x-1/2 w-10/12 z-20 '
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
+              <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt=""  className=' hidden md:block '/>
+              
             </motion.div>
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.5 }}
-              className='mx-auto relative overflow-hidden z-0  w-2/5 md:w-4/12'
+              className='mx-auto relative overflow-hidden z-0  w-6/12 md:w-4/12'
             >
 
               <img
