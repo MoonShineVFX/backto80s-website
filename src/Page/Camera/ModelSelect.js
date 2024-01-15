@@ -429,7 +429,7 @@ function ModelSelect() {
         :
         <div className="w-[160px] aspect-video flex flex-col mx-auto fixed top-5 right-5 text-xs">Remember to upload a photo</div>
       }
-        <div className='w-[84%] md:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
+        <div className='w-[84%] md:w-[70%] lg:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 lg:grid-cols-4 px-5'>
             {
               bannerData?.map((item,index)=>{
                 return(
