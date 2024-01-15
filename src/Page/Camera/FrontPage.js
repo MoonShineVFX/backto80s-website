@@ -65,7 +65,7 @@ function FrontPage({handleClick}) {
           <div 
             className=' relative w-full md:w-7/12 mx-auto   text-center '
           >
-            <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo_m.png" alt="" className='block md:hidden mx-auto my-5' />
+            <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo_m.png" alt="" className='block md:hidden mx-auto my-5 w-1/2' />
             <motion.div 
               className=' md:my-2 text-gray-200 absolute left-1/2 -translate-x-1/2 w-10/12 z-20 '
               initial={{ opacity: 0 }}

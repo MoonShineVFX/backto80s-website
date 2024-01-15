@@ -50,8 +50,8 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
             <FaXmark size={30} />
           </IconButton>
         </DialogHeader>
-        <DialogBody className='p-0 m-0 overflow-y-auto'>
-          <div className='flex flex-col md:flex-col justify-center items-center gap-0  -mt-10 '>
+        <DialogBody className='p-0 m-0 overflow-y-auto h-5/6'>
+          <div className='flex flex-col md:flex-col justify-center items-center gap-0  '>
 
             {Object.keys(taskStatus).length > 0 && (
               <div className='w-[85%] relative my-10 md:pt-[5%]'>
