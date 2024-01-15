@@ -41,7 +41,7 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
   };
   return (
     <div>
-      <Dialog open={open} size="xxl"  className='bg-white/80 pt-0 '>
+      <Dialog open={open} size="xxl"  className='bg-white/80 pt-0 overflow-hidden '>
       <DialogHeader className="justify-end mb-0 md:mb-1">
           <IconButton
             variant="text"
@@ -50,8 +50,8 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
             <FaXmark size={30} />
           </IconButton>
         </DialogHeader>
-        <DialogBody className='p-0 m-0'>
-          <div className='flex flex-col md:flex-col justify-center items-center gap-0 '>
+        <DialogBody className='p-0 m-0 overflow-y-auto'>
+          <div className='flex flex-col md:flex-col justify-center items-center gap-0  -mt-10 '>
 
             {Object.keys(taskStatus).length > 0 && (
               <div className='w-[85%] relative my-10 md:pt-[5%]'>
