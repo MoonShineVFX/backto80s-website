@@ -528,7 +528,7 @@ function ModelSelect() {
 
         
       
-      <Result open={!showRender} handleOpen={handleOpen} renderedResult={renderedResult} username={storedUsername} taskStatus={taskStatus}/>
+      <Result open={showRender} handleOpen={handleOpen} renderedResult={renderedResult} username={storedUsername} taskStatus={taskStatus}/>
       
     </div>
   )
