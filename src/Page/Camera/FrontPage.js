@@ -127,7 +127,7 @@ function FrontPage({handleClick}) {
             <div className='flex flex-col gap-2 md:flex-row md:gap-0  w-4/5 md:w-full   '>
 
               <div 
-                className=' relative rounded-r-lg cursor-pointer  w-4/5 mx-auto -mt-6  '
+                className=' relative rounded-r-lg cursor-pointer  w-4/5 mx-auto -mt-6  hover:-translate-y-1 transition-all'
                 onClick={handleStart}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}

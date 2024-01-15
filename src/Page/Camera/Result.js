@@ -1,5 +1,6 @@
 import React,{Suspense} from 'react'
 import { Link } from "react-router-dom";
+
 import {
   Button,
   Dialog,
@@ -11,7 +12,8 @@ import {
 } from "@material-tailwind/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaXmark } from "react-icons/fa6";
-function Result({open ,handleOpen,renderedResult,username,taskStatus}) {
+import { FiLoader } from "react-icons/fi";
+function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResultComplete}) {
 
   const downloadImage = (imgurl) => {
     const imageUrl = imgurl
@@ -112,17 +114,20 @@ function Result({open ,handleOpen,renderedResult,username,taskStatus}) {
             )}
 
              
-            <div className='w-2/3 md:w-1/2 flex md:flex-col md:gap-4 items-center justify-center'>
+            <div className='w-2/3 md:w-2/3 flex md:flex-col md:gap-2 items-center justify-center'>
 
-              <div className='flex  flex-col md:flex-row w-full md:w-full gap-2 md:gap-8 mt-4 md:mt-0 h-14 '>
-
-                <div className=" relative  mx-auto h-full" onClick={handleOpen}>
+              <div className='flex  flex-col md:flex-row w-full md:w-full gap-2 md:gap-8 mt-4 md:mt-0 h-14 md:h-auto '>
+                <div className=" relative  mx-auto h-full cursor-pointer hover:-translate-y-1 transition-all" onClick={isResultComplete ? handleDownload : undefined}>
+                  <img src={process.env.PUBLIC_URL+'/images/btn_download.png'} alt=""  className={`${isResultComplete ? 'grayscale-0 ' : 'grayscale ' } h-full transition-all`}/>
+                  {isCompressing && <div className='text-center flex items-center justify-center gap-2 '><FiLoader className='animate-spin' />Compressing..  </div>}
+                </div>
+                <div className=" relative  mx-auto h-full cursor-pointer hover:-translate-y-1 transition-all" onClick={handleOpen}>
                   <img src={process.env.PUBLIC_URL+'/images/btn_redraw.png'} alt=""  className="h-full"/>
                 </div>
-                <Link to='/camera' className=" relative mt-2 md:mt-0 mx-auto  h-full" onClick={handleOpen}>
+                <Link to='/camera' className=" relative mt-2 md:mt-0 mx-auto  h-full hover:-translate-y-1 transition-all" onClick={handleOpen}>
                   <img src={process.env.PUBLIC_URL+'/images/btn_reshoot.png'} alt=""  className="h-full"/>
                 </Link>
-                <Link to='/' className=" relative mt-2 md:mt-0  mx-auto  h-full" onClick={handleOpen}>
+                <Link to='/' className=" relative mt-2 md:mt-0  mx-auto  h-full hover:-translate-y-1 transition-all" onClick={handleOpen}>
                   <img src={process.env.PUBLIC_URL+'/images/btn_home.png'} alt=""  className="h-full"/>
                 </Link>
               </div>

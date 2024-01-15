@@ -562,7 +562,7 @@ function ReadyToTake({handleBackClick}) {
               ref={inputFileRef}
 
             />
-            <div className=" relative hidden md:block h-full  " onClick={onBtnClick}>
+            <div className=" relative hidden md:block h-full hover:-translate-y-1 transition-all " onClick={onBtnClick}>
               <img src={process.env.PUBLIC_URL+'/images/btn_upload.png'} alt="" className="max-w-full h-full " />
             </div>
 
@@ -575,7 +575,7 @@ function ReadyToTake({handleBackClick}) {
                   initial={{ opacity: 0}}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="hidden md:block h-full"
+                  className="hidden md:block h-full hover:-translate-y-1 transition-all"
                 >
                   <Link to={'/templates'} className=" relative">
                     <img src={process.env.PUBLIC_URL+'/images/btn_next.png'} alt="" className="max-w-full h-full" />

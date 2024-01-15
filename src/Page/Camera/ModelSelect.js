@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {getUsernameFromCookie,getRandomUniqueNumbers} from '../../Helper/Helper'
 import Resizer from "react-image-file-resizer";
 import TiltCard from '../Components/TiltCard';
+import JSZip from 'jszip';
 const bannerData = [
   {url:"https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/template01.png" ,title:'MODULE 1', subtitle:"Introduction to module one",id:'1'},
   {url:"https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/template02.png" ,title:'MODULE 2', subtitle:"Introduction to module two",id:'2'},
@@ -23,6 +24,8 @@ const bannerData = [
 function ModelSelect() {
   const storedUsername = getUsernameFromCookie();
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isCompressing , setIsCompressing] = useState(false)
+  const [isResultComplete,setIsResultComplete]= useState(false)
   const [sourceImage ,setSourceImage ] = useState(null)
   const [taskStatus, setTaskStatus] = useState([
     {
@@ -49,7 +52,8 @@ function ModelSelect() {
       img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/49.jpg',
       finished: 0,
     }
-  ]); // 任務初始狀態為 'Waiting'
+  ]); 
+
   const handleResize = () => {
     setIsMobile(window.innerWidth < 768);
   };
@@ -100,7 +104,6 @@ function ModelSelect() {
   const onBtnClick= async ()=>{
     //todo 四個數字  1-91
     // getRandomUniqueNumbers(43,1,91)
-   
     if (!beforeImage) {
       setMsg('Error: Image must be taken or uploaded first.')
       return
@@ -115,14 +118,14 @@ function ModelSelect() {
       setMsg(null)
       setMsg('Picture uploading…..')
       setIsRender(true)
+      setIsResultComplete(false)
 
       const imageUrls = getRandomUniqueNumbers(4, 1, 91).map(
         (num) => `https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/${num}.jpg`
       );
       //blob:https://web-r2.moonshine.tw/22837887-432d-4d0e-ac94-85ab193ba1b1
       console.log(imageUrls)
-  
-      
+
       // setStartRender(true)
       //fetch API 上傳運算
       //POST https://faceswap.rd-02f.workers.dev/images 上傳圖片
@@ -130,7 +133,6 @@ function ModelSelect() {
       var file = dataURLtoFile(beforeImage,'image.jpg')
       const { width, height } = await getImageDimensions(file);
       console.log(width, height)
-  
       
       //容量 尺寸
       let compressFiles;
@@ -152,7 +154,7 @@ function ModelSelect() {
 
     }
   }
-  //TODO 從上面執行 
+  //TODO 
   const uploadAndAwaitResult = async (imageUrls,compressFiles)=>{
     const statusList = imageUrls.map((imageUrl) => ({
       status: 'Uploading...',
@@ -244,6 +246,9 @@ function ModelSelect() {
   const processTasks = async (tasks, index) => {
     if (index >= tasks.length) {
       // 所有任务都已处理完毕，退出递归
+      console.log('完成了',tasks.length , index)
+      setIsResultComplete(true)
+    
       return;
     }
   
@@ -257,7 +262,7 @@ function ModelSelect() {
       // 如果沒有 source_image，一段時間再嘗試
       setTimeout(() => {
         processTasks(tasks, index);
-      }, 1000); // 假设间隔为1秒，你可以根据需要调整
+      }, 1500); // 假设间隔为1秒，你可以根据需要调整
     } else {
       // 更新任務狀態
       task.finished = 1;
@@ -285,44 +290,7 @@ function ModelSelect() {
       // 返回一个错误或默认值，取决于你的需求
       return { error: 'An error occurred' };
     }
-    
-    // if(sourceImg !== undefined ){
-    //   console.log('save')
-    //   source = sourceImg
-    // }
-
-    // let reid = id
-    // await fetch(apiUrl+id, {
-    //   method: 'GET',
-    // })
-    // .then(response => response.json())
-    // .then(responseData => {
-    //   console.log(responseData)
-     
-      
-    //   if(responseData.restarted>=2){
-    //     setMsg('Timeout error, please upload the image again.')
-    //     return
-    //   }
-    //   // if(responseData.finished === 0){
-    //   //   getResulImage(id)
-    //   // }
-
-    //   if(responseData.finished ===1){
-    //     setRenderedResult(responseData)
-    //     setShowRender(true)
-    //     setIsRender(false)
-    //     setMsg('')
-    //     // await updatedData(id,responseData.generations[0].img,source )
-    //     return
-    //   }
-   
-
-    // })
-    // .catch(error => {
-    //   console.error(error);
-    // });
-
+  
   }
   const updatedData = async (id,url,sourceImage)=>{
     console.log(sourceImage)
@@ -380,6 +348,64 @@ function ModelSelect() {
 
     // 在這裡執行其他你想要的邏輯...
   }, [sourceImage]); // 設定 sourceImage 為 effect 的依賴
+
+
+  //處理圖片打包下載壓縮檔
+  const handleDownload = async()=>{
+    const addImagePromises = [];
+    setIsCompressing(true)
+    for (let index = 0; index < taskStatus.length; index++) {
+      const task = taskStatus[index];
+      if (task.finished === 1 && task.img) {
+        // 提取图片文件名，可以根据需要修改文件名
+        const filename = `${'img'+index}.jpg`;
+        addImagePromises.push(fetchAndAddImageToZip(task.img, filename));
+      }
+    }
+    console.log(taskStatus)
+
+
+    try {
+      // 使用 Promise.all 等待所有图片添加操作完成
+      await Promise.all(addImagePromises);
+      setIsCompressing(false)
+      // 所有图片已添加，现在可以生成 zip 文件
+      const content = await zip.generateAsync({ type: 'blob' });
+  
+      // 创建一个可下载的链接
+      const url = window.URL.createObjectURL(content);
+  
+      // 创建一个下载链接元素
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'images.zip'; // 设置下载文件的名称
+  
+      // 模拟点击下载链接
+      a.click();
+  
+      // 释放 URL 对象
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error while handling download:', error);
+    }
+  }
+  const zip = new JSZip();
+  const fetchAndAddImageToZip = async (imageUrl, filename) => {
+    
+    try {
+      const response = await fetch(imageUrl);
+      if (response.ok) {
+        const imageData = await response.blob();
+        const imageFile = new File([imageData], filename);
+        console.log(imageFile)
+        zip.file(filename, imageFile);
+      } else {
+        console.error(`Failed to fetch image from ${imageUrl}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching image from ${imageUrl}: ${error.message}`);
+    }
+  };
   
   return (
     <div className="flex flex-col justify-between items-center my-1 md:my-10 w-full h-full">
@@ -440,7 +466,7 @@ function ModelSelect() {
     
         </div>
         {beforeImage? 
-          <div className=" relative mt-8 md:mt-8 cursor-pointer h-14" onClick={onBtnClick}>
+          <div className=" relative mt-8 md:mt-8 cursor-pointer h-14 hover:-translate-y-1 transition-all" onClick={onBtnClick}>
             <img src={process.env.PUBLIC_URL+'/images/btn_create.png'} alt="" className="max-w-full h-full" />
           </div>
           :
@@ -528,7 +554,7 @@ function ModelSelect() {
 
         
       
-      <Result open={showRender} handleOpen={handleOpen} renderedResult={renderedResult} username={storedUsername} taskStatus={taskStatus}/>
+      <Result open={showRender} handleOpen={handleOpen} taskStatus={taskStatus} handleDownload={handleDownload} isCompressing={isCompressing} isResultComplete={isResultComplete}/>
       
     </div>
   )
