@@ -13,6 +13,7 @@ jobs:
       REACT_APP_FIREBASE_SENDER_ID: ${{ secrets.FIREBASE_SENDER_ID }}
       REACT_APP_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
       REACT_APP_FIREBASE_MEASUREMENT_ID: ${{ secrets.FIREBASE_MEASUREMENT_ID }}
+      REACT_APP_APITOKEN: ${{secrets.APITOKEN}}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
