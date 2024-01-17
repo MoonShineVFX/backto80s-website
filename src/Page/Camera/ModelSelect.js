@@ -174,11 +174,9 @@ function ModelSelect() {
           const response = await fetch(face_swap_url, {
             method: 'POST',
             body: formData,
-            referrerPolicy:'no-referrer',
             headers: {
-              Authorization:process.env.REACT_APP_APITOKEN
+              'Authorization':process.env.REACT_APP_APITOKEN
             }
-
 
           });
   
@@ -285,7 +283,7 @@ function ModelSelect() {
       const response = await fetch(getimages_url+ id, {
         method: 'GET',
         headers: {
-          Authorization:process.env.REACT_APP_APITOKEN
+          'Authorization':process.env.REACT_APP_APITOKEN
         }
       });
       const responseData = await response.json();
@@ -312,9 +310,8 @@ function ModelSelect() {
       method: 'POST',
       body: formData,
       redirect: 'follow',
-      mode: 'no-cors',
       headers: {
-        Authorization:process.env.REACT_APP_APITOKEN
+        'Authorization':process.env.REACT_APP_APITOKEN
       }
     })
     .then(response => {
