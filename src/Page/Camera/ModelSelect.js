@@ -17,7 +17,7 @@ const bannerData = [
   {url:"https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/template04.png" ,title:'MODULE 4', subtitle:"Introduction to module four",id:'4'},
 
  ]
-
+ let corsURL = 'https://mscors-anywhwere.kilokingw.workers.dev/?'
  let apiurl = 'https://backto80s-api.rd-02f.workers.dev/'
  let face_swap_url = apiurl + 'face_swap'
  let getimages_url =  apiurl + 'images/'
@@ -170,16 +170,15 @@ function ModelSelect() {
           const formData = new FormData();
           formData.append('source_image', compressFiles);
           formData.append('swap_image_url', imageUrl);
-  
-          const response = await fetch(face_swap_url, {
+          var myHeaders = new Headers();
+          myHeaders.append("Authorization", process.env.REACT_APP_APITOKEN);
+          var requestOptions = {
             method: 'POST',
+            headers: myHeaders,
             body: formData,
-            headers: {
-              'Authorization':process.env.REACT_APP_APITOKEN
-            }
-
-          });
-  
+            redirect: 'follow',
+          };
+          const response = await fetch(corsURL+face_swap_url,requestOptions);
           if (!response.ok) {
             setMsg('Error:please upload the image again.')
             reject(new Error('Image upload failed.'));
@@ -187,7 +186,6 @@ function ModelSelect() {
           }
   
           const responseData = await response.json();
-          
           console.log(responseData);
           
   
@@ -280,7 +278,7 @@ function ModelSelect() {
   let source;
   const getResulImage =  async (id) =>{
     try {
-      const response = await fetch(getimages_url+ id, {
+      const response = await fetch(corsURL+getimages_url+ id, {
         method: 'GET',
         headers: {
           'Authorization':process.env.REACT_APP_APITOKEN
