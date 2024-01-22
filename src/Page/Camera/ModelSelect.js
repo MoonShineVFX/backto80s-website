@@ -413,7 +413,7 @@ function ModelSelect() {
   };
   
   return (
-    <div className="flex flex-col justify-between items-center my-1 md:my-10 w-full h-full">
+    <div className="flex flex-col justify-between items-center  w-full h-full my-10 md:my-0 md:mt-4">
       
 
       {beforeImage?
@@ -434,48 +434,39 @@ function ModelSelect() {
         :
         <div className="w-[160px] aspect-video flex flex-col mx-auto fixed top-5 right-5 text-xs">Remember to upload a photo</div>
       }
-        <div className='w-[84%] md:w-[70%] lg:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 lg:grid-cols-4 px-5'>
-            {
-              bannerData?.map((item,index)=>{
-                return(
-                  <div key={'tf'+index} className=' cursor-pointer '>
-                    <div className=' relative '>
-                      <div 
-                        className={currentId === item.id ? ' scale-110 md:scale-100 md:-translate-y-12 ' : '  ' + ' relative w-full transition-all duration-1000' }
-                        onClick={()=>{
-                          handleImageClick(index)
-                          setCurrentId(String(index+1))
-                        }}
-                      >
-                        <TiltCard 
-                          imgUrl={item.url}
-                        />
+        <motion.div 
+          className='  text-gray-200 w-full md:w-8/12 lg:w-7/12 mx-auto z-20 '
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
 
-                      </div>
+          <Link to='/' className=" " >
+            <Button variant="text" className="flex items-center gap-3 text-[#FF3976] p-0 mb-2 text-2xl font-extrabold  mt-2 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]">
+              <FaArrowLeft size={15} className='ml-2' />
+              Back 
+            </Button>
+          </Link>
 
-                      <div className=' absolute -bottom-2 -left-10 z-20 bg-gradient-to-r p-2 from-black/90 via-black/70 hidden '>
-                        <div className='text-2xl text-red-500'>{item.title}</div>
-                        <div className='text-white/50'>{item.subtitle}</div>
-                      </div>
+          <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
 
-                    </div>
+        </motion.div>
+        <div className='w-[84%] md:w-6/12 lg:w-4/12 mx-auto relative mt-10 cursor-pointer'>
 
-                  </div>
-                )
-              })
-            } 
-
-
-        
-
-    
+          <div 
+            className={ ' relative w-full transition-all duration-1000' }
+            onClick={onBtnClick}
+          >
+            <TiltCard 
+              imgUrl='https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_create3.png'
+            />
+          </div>
         </div>
         {beforeImage? 
-          <div className=" relative mt-8 md:mt-8 cursor-pointer h-14 hover:-translate-y-1 transition-all" onClick={onBtnClick}>
-            <img src={process.env.PUBLIC_URL+'/images/btn_create.png'} alt="" className="max-w-full h-full" />
+          <div className=" ">
           </div>
           :
-          <div className=" relative mt-8 md:mt-4 cursor-default" onClick={onBtnClick}>
+          <div className=" relative mt-8 md:mt-4 cursor-default" >
             <div className='bg-[#FF3976]/80  px-10 py-2 border  border-white/30 flex items-center gap-2  font-roboto' >No images found for operation.</div>
             <div className='text-sm font-normal text-[#FF3976] text-center mt-3'>Please take a new photo or upload the image.</div>
           </div>
@@ -502,7 +493,6 @@ function ModelSelect() {
                   initial={{ opacity: 0,y:10 }}
                   animate={{ opacity: 1,y:0}}
                   exit={{ opacity: 0,y:10}} src={bannerData[currentIndex].url} alt="Selected"  className=" max-w-full h-fulll  " />
-
               </div>
               <div className=' relative left-1/2 -translate-x-1/2  z-40 w-full text-center '>
                   {msg && !msg.includes('Error') && (

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, Suspense,useCallback } from "react";
 import {useImage} from '../../Helper/ImageContext'
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import {Camera} from "react-camera-pro";
 import Webcam from "react-webcam";
 import styled from 'styled-components';
@@ -29,6 +29,7 @@ const ResultImagePreview = styled.div`
   }
 `;
 function ReadyToTake({handleBackClick}) {
+  const navigate = useNavigate();
   const storedUsername = getUsernameFromCookie();
   const [isCameraOpen, setCameraOpen] = useState(true);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -49,6 +50,7 @@ function ReadyToTake({handleBackClick}) {
   const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png','image/bmp'];
   const [ isCameraInfo,setIsCameraInfo] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [msg,setMsg] = useState('')
   const handleResize = () => {
     setIsMobile(window.innerWidth < 768);
   };
@@ -180,6 +182,10 @@ function ReadyToTake({handleBackClick}) {
         setBeforeImage(reader.result)
       };
       reader.readAsDataURL(compressFiles);
+      setMsg('proceed to the next step..')
+      setTimeout(()=>{
+        navigate("/templates");
+      },1200)
     }
 
   }
@@ -378,7 +384,7 @@ function ReadyToTake({handleBackClick}) {
 
     const timeoutId = setTimeout(() => {
       setIsCameraInfo(false);
-    }, 10000);
+    }, 8000);
 
     return () => {
       // 在組件卸載時清除 timeout，避免潛在的記憶體洩漏
@@ -390,62 +396,100 @@ function ReadyToTake({handleBackClick}) {
 
   const [src, { blur }] = useProgressiveImg(process.env.PUBLIC_URL+'/images/camera_page/tiny.jpeg', ResultImage);
   return (
-    <div className='flex flex-col w-full justify-between items-center gap-4  my-10 md:my-0 md:-mt-4'>
+    <div className='flex flex-col w-full justify-between items-center gap-4  my-10 md:my-0 md:mt-4'>
 
       
       {notification && (
         <CustomAlert message={notification} onClose={() => setNotification(null)} />
       )}
+
+
+      <motion.div 
+        className='  text-gray-200  w-full md:w-8/12 lg:w-7/12 -auto z-20 '
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+
+        <Link to='/' className=" " >
+          <Button variant="text" className="flex items-center gap-3 text-[#FF3976] p-0 mb-2 text-2xl font-extrabold  mt-2 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]">
+            <FaArrowLeft size={15} className='ml-2' />
+            Back 
+          </Button>
+        </Link>
+
+        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
+
+      </motion.div>
+       
       {isCameraOpen ? 
         <div className="flex  items-center gap-4 relative w-full">
-          <div 
-            className=" relative md:w-3/5   mx-auto  bg-gray-500   "
-            style={{clipPath: 'inset(0 0 0% 0 round 25px)'}}
-          >
-            <Alert 
-              open={isCameraInfo} 
-              className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 w-10/12  md:w-10/12 mx-auto bg-black p-3 rounded-md  [&>*]:mr-0  " 
+
+          <div className="mt-10 relative md:w-6/12 lg:w-5/12  mx-auto">
+            <div className='flex items-center gap-2  mb-2 absolute -top-4 left-0 z-10'>
+              <img src={process.env.PUBLIC_URL+'/images/title_heart.png'} alt="" className='max-w-full absolute -top-3 left-1 w-7   '/> 
+              <div className='text-[#FF0050] text-base font-bold bg-[#FFF7BB] border-[#111111] border rounded-full  px-3 py-1 ml-2'> Take Photo</div>
+            </div>
+
+          
+            <div 
+              className=" relative mx-auto  bg-gray-500   "
+              style={{clipPath: 'inset(0 0 0% 0 round 25px)'}}
             >
-              <div className="flex items-center gap-2 w-full text-sm">
-                <FaInfoCircle size={32} /> <div>Please remove accessories such as glasses and hats, and align your face with the reference line</div>
-              </div>
-              
-            </Alert>
 
-            {!image &&
-              <div className="w-full h-full  top-0 z-10 absolute  ">
-                <img src={process.env.PUBLIC_URL+'/images/headframe_white.png'} alt="" className="w-full h-full object-cover " />
-              </div>
-            }
+              <Alert 
+                open={isCameraInfo} 
+                className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 w-10/12  md:w-10/12 mx-auto bg-black p-3 rounded-md  [&>*]:mr-0  " 
+              >
+                <div className="flex items-center gap-2 w-full text-sm">
+                  <FaInfoCircle size={32} /> <div>Please remove accessories such as glasses and hats, and align your face with the reference line</div>
+                </div>
+                
+              </Alert>
 
-           
-            {image && (
-              <div 
-                className="z-10 absolute bg-black/70 w-full h-full bg-cover bg-no-repeat bg-center flex justify-center items-center  "
-                style={{
-                  backgroundImage: `url(${process.env.PUBLIC_URL +'/images/headframe_red.png'})`,
-                }}
-              >  
-                <motion.div 
-                  initial={{ opacity: 0,y:-10 }} 
-                  animate={{ opacity: 1,y:0}}
-                  exit={{ opacity: 0,y:0 }}
-                  className="w-[250px] relative">
-                  <div className="pt-[80%]  aspect-[4/4.2] md:aspect-[13/10] relative ">
-                    <img src={image} alt="Selected"  className="absolute top-0 left-0 object-cover w-full h-full rounded-md border-0 border-white   " />
-                  </div>
-                  <div className=" absolute top-1 right-1 z-20 ">
-                    <IconButton size="sm" className="rounded-full bg-[#FF0050] "  onClick={()=>setImage(null)}>
-                      <FaTimes size={16} />
-                    </IconButton>
-                  </div>     
-                </motion.div>
-   
-              </div>
-            )}
+              {!image &&
+                <div className="w-full h-full  top-0 z-10 absolute  ">
+                  <img src={process.env.PUBLIC_URL+'/images/headframe_white.png'} alt="" className="w-full h-full object-cover " />
+                </div>
+              }
 
             
-           {isMobile ? <Webcam ref={webcamRef} facingMode= 'user' mirrored={videoConstraints.facingMode === 'user' ? true: false} videoConstraints={videoConstraints} /> :  <Webcam ref={webcamRef} mirrored={true} width={'100%'} height={'60%'}     />} 
+              {image && (
+                <div 
+                  className="z-10 absolute bg-black/70 w-full h-full bg-cover bg-no-repeat bg-center flex justify-center items-center   "
+                  style={{
+                    backgroundImage: `url(${process.env.PUBLIC_URL +'/images/headframe_red.png'})`,
+                  }}
+                >  
+                  {msg &&
+                    <motion.div
+                      initial={{ opacity: 0,y:10 }}
+                      animate={{ opacity: 1,y:0}}
+                      exit={{ opacity: 0,y:10}} 
+                      className=' absolute top-10 translate-x-1/2  text-[#fff] text-base font-bold bg-[#FF0050] border-[#111111] border-0 rounded-full  px-3 py-1  uppercase  z-30 '>{msg}</motion.div>
+                  } 
+                  <motion.div 
+                    initial={{ opacity: 0,y:-10 }} 
+                    animate={{ opacity: 1,y:0}}
+                    exit={{ opacity: 0,y:0 }}
+                    className="w-[250px] relative">
+                    <div className="pt-[80%]  aspect-[4/4.2] md:aspect-[13/10] relative ">
+                      <img src={image} alt="Selected"  className="absolute top-0 left-0 object-cover w-full h-full rounded-md border-0 border-white   " />
+                    </div>
+                    <div className=" absolute top-1 right-1 z-20 hidden ">
+                      <IconButton size="sm" className="rounded-full bg-[#FF0050] "  onClick={()=>setImage(null)}>
+                        <FaTimes size={16} />
+                      </IconButton>
+                    </div>     
+    
+                  </motion.div>
+    
+                </div>
+              )}
+
+              
+              {isMobile ? <Webcam ref={webcamRef} facingMode= 'user' mirrored={videoConstraints.facingMode === 'user' ? true: false} videoConstraints={videoConstraints} /> :  <Webcam ref={webcamRef} mirrored={true} width={'100%'}   />} 
+            </div>
           </div>
           {
            isMobile ?
@@ -465,7 +509,7 @@ function ReadyToTake({handleBackClick}) {
               </button>
               <Link 
                 to={'/templates'} 
-                className="flex items-center      h-12 "
+                className="flex items-center  h-12 hidden "
               > 
                <img src={process.env.PUBLIC_URL+'/images/btn_next.png'} alt=""  className="h-full"/>
               </Link>
@@ -477,9 +521,9 @@ function ReadyToTake({handleBackClick}) {
               animate={{ opacity: 1 , x: '-50%',y:-0}}
               exit={{ opacity: 0,x:'-50%',y:-10 }}
               transition={{ duration: 0.2 }}
-              className="absolute -bottom-28 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-4  w-[80%]">
+              className="absolute -bottom-28 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-4  w-[80%] ">
               <button 
-                className="flex items-center  rounded-full bg-gray-800   "
+                className="flex items-center  rounded-full bg-gray-800  hidden  "
                 onClick={onBtnClick}
               > 
                 <img src={process.env.PUBLIC_URL+'/images/btn_upload02.png'} alt="" />
@@ -562,7 +606,7 @@ function ReadyToTake({handleBackClick}) {
               ref={inputFileRef}
 
             />
-            <div className=" relative hidden md:block h-full hover:-translate-y-1 transition-all " onClick={onBtnClick}>
+            <div className=" relative hidden h-full hover:-translate-y-1 transition-all  " onClick={onBtnClick}>
               <img src={process.env.PUBLIC_URL+'/images/btn_upload.png'} alt="" className="max-w-full h-full " />
             </div>
 
@@ -575,7 +619,7 @@ function ReadyToTake({handleBackClick}) {
                   initial={{ opacity: 0}}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="hidden md:block h-full hover:-translate-y-1 transition-all"
+                  className="hidden h-full hover:-translate-y-1 transition-all"
                 >
                   <Link to={'/templates'} className=" relative">
                     <img src={process.env.PUBLIC_URL+'/images/btn_next.png'} alt="" className="max-w-full h-full" />
