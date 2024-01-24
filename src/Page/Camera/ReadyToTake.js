@@ -410,15 +410,17 @@ function ReadyToTake({handleBackClick}) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
+        <div className="w-10/12 lg:w-full mx-auto">
+          <Link to='/' className=" " >
+            <Button variant="text" className="flex items-center gap-3 text-[#FF3976] p-0 mb-2 text-2xl font-extrabold  mt-2 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]">
+              <FaArrowLeft size={15} className='ml-2' />
+              Back 
+            </Button>
+          </Link>
 
-        <Link to='/' className=" " >
-          <Button variant="text" className="flex items-center gap-3 text-[#FF3976] p-0 mb-2 text-2xl font-extrabold  mt-2 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]">
-            <FaArrowLeft size={15} className='ml-2' />
-            Back 
-          </Button>
-        </Link>
+          <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
+        </div>
 
-        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
 
       </motion.div>
        
@@ -510,7 +512,7 @@ function ReadyToTake({handleBackClick}) {
               transition={{ duration: 0.2 }}
               className="absolute -bottom-24 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-10  w-[80%] ">
               <button 
-                className="flex items-center     h-12"
+                className="flex items-center     h-12 hidden"
                 onClick={()=>setImage(null)}
               > 
                 <img src={process.env.PUBLIC_URL+'/images/btn_back.png'} alt=""  className="h-full"/>
@@ -529,13 +531,13 @@ function ReadyToTake({handleBackClick}) {
               animate={{ opacity: 1 , x: '-50%',y:-0}}
               exit={{ opacity: 0,x:'-50%',y:-10 }}
               transition={{ duration: 0.2 }}
-              className="absolute -bottom-28 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-4  w-[80%] ">
-              <button 
+              className="absolute -bottom-28 md:-bottom-6 left-1/2 -translate-x-1/2 z-10 flex items-center  gap-4  w-[60%] ">
+              {/* <button 
                 className="flex items-center  rounded-full bg-gray-800  hidden  "
                 onClick={onBtnClick}
               > 
                 <img src={process.env.PUBLIC_URL+'/images/btn_upload02.png'} alt="" />
-              </button>
+              </button> */}
               <button 
                 className="flex items-center  rounded-full bg-[#FF0050]    shadow-lg shadow-gray-300/40  "
                 onClick={capture} 

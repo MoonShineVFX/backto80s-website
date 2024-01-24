@@ -208,10 +208,10 @@ function FrontPage({handleClick}) {
           </div>
           <div className='mt-auto flex flex-col justify-center items-center'>
 
-            <div className='flex flex-col gap-2 md:flex-col md:gap-0  w-4/5 md:w-full   '>
+            <div className='flex flex-col gap-2 md:flex-col md:gap-0  md:w-full   '>
 
               <div 
-                className=' relative rounded-r-lg cursor-pointer  w-4/5 md:w-full mx-auto -mt-6  hover:-translate-y-1 transition-all'
+                className=' relative rounded-r-lg cursor-pointer   md:w-full mx-auto -mt-6  hover:-translate-y-1 transition-all'
                 onClick={handleStart}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -222,12 +222,12 @@ function FrontPage({handleClick}) {
                     backgroundImage:`url(${process.env.PUBLIC_URL+'/images/btn_bg2.png'})`
                   }}
                 >
-                  <div className='text-[#FFF7BB] font-extrabold text-xl drop-shadow uppercase flex items-center gap-2 '>Take photo <FaArrowRight size={20} /></div>
+                  <div className='text-[#FFF7BB] font-extrabold lg:text-xl drop-shadow uppercase flex items-center gap-2 '>Take photo <FaArrowRight size={20} /></div>
                 </div>
               </div>
               <div className='text-center text-[#FFF7BB] text-lg font-extrabold drop-shadow'>or</div>
               <div 
-                className=' relative rounded-r-lg cursor-pointer  w-4/5 md:w-full mx-auto mt-3  hover:-translate-y-1 transition-all'
+                className=' relative rounded-r-lg cursor-pointer   md:w-full mx-auto mt-3  hover:-translate-y-1 transition-all'
                 onClick={onBtnClick}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -241,12 +241,12 @@ function FrontPage({handleClick}) {
 
                 />
                 <div 
-                  className='bg-contain bg-no-repeat bg-center flex justify-center items-center px-5 py-4 '
+                  className='bg-contain bg-no-repeat bg-center flex justify-center items-center px-5 py-6 lg:py-4 '
                   style={{
                     backgroundImage:`url(${process.env.PUBLIC_URL+'/images/btn_bg2.png'})`
                   }}
                 >
-                  <div className='text-[#FFF7BB] font-extrabold text-xl drop-shadow uppercase flex items-center gap-2   '><FaUpload size={20} /> Upload </div>
+                  <div className='text-[#FFF7BB] font-extrabold lg:text-xl drop-shadow uppercase flex items-center gap-2   '><FaUpload size={20} /> Upload </div>
                 </div>
               </div>
 

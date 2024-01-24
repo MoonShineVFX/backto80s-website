@@ -434,9 +434,9 @@ function ModelSelect() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1}}
           exit={{ opacity: 0 }}
-          className='  flex flex-col justify-center items-center  absolute  z-30  top-1/2 drop-shadow '
+          className='  flex flex-col justify-center items-center  absolute  z-30  top-1/2 drop-shadow w-10/12 lg:w-auto '
         >
-          <div className='mx-auto bg-[#fff]/90 rounded-full py-4'>
+          <div className='mx-auto bg-[#fff]/90 rounded-full py-4 px-10 lg:px-0'>
             <div className=' relative  w-full text-center '>
                 {msg && !msg.includes('Error') && (
                   <motion.div 
@@ -509,7 +509,7 @@ function ModelSelect() {
         <div className="w-[160px] aspect-video flex flex-col mx-auto fixed top-5 right-5 text-xs">Remember to upload a photo</div>
       }
         <motion.div 
-          className='  text-gray-200 w-full md:w-8/12 lg:w-7/12 mx-auto z-20 '
+          className='  text-gray-200 w-10/12 md:w-8/12 lg:w-7/12 mx-auto z-20 '
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
