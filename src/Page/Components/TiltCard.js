@@ -56,64 +56,34 @@ function TiltCard({imgUrl}) {
     >       
 
       <motion.div
-        className='w-24 absolute top-5 left-5  pointer-events-none'
-        style={{
-          xOffset,
-          yOffset,
-          transform: `translateZ(30px) `
-          
-        }}
-      >
-        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_c_01.png" alt="" />
-      </motion.div>
-      <motion.div
-        className='w-24 absolute top-5 right-5  pointer-events-none'
-        style={{
-          xOffset,
-          yOffset,
-          transform: `translateZ(40px) `
-          
-        }}
-      >
-        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_c_02.png" alt="" />
-      </motion.div>
-      <motion.div
-        className='w-24 absolute bottom-10 leftt-10  pointer-events-none'
-        style={{
-          xOffset,
-          yOffset,
-          transform: `translateZ(40px) `
-          
-        }}
-      >
-        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_c_03.png" alt="" />
-      </motion.div>
-      <motion.div
-        className='w-24 absolute bottom-10 right-10  pointer-events-none'
+        className=' absolute top-0 left-0 pointer-events-none transition-all grid grid-cols-2 gap-2'
         style={{
           xOffset,
           yOffset,
           transform: `translateZ(50px) `
-          
         }}
       >
-        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_c_04.png" alt="" />
+        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_c_01.png" alt="" className='max-w-full w-[60%] mx-auto my-auto' />
+        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_c_02.png" alt="" className='max-w-full w-[80%] mx-auto my-auto' />
+        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_c_03.png" alt="" className='max-w-full w-[80%] mx-auto my-auto' />
+        <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_c_04.png" alt="" className='max-w-full w-[80%] mx-auto my-auto' />
       </motion.div>
+
       <motion.div
-        className=' absolute top-0 right-1  pointer-events-none'
+        className=' absolute -top-2 right-1/4  pointer-events-none transition-all'
         style={{
           xOffset,
           yOffset,
-          transform: `translateZ(46px) `
+          transform: `translateZ(66px) rotate(-5deg) `
           
         }}
       >
           <motion.div 
             initial={{ opacity: 0 , translateY:-50}}
-            animate={{ opacity: 1 , translateY:0}}
+            animate={{ opacity: 1 , translateY:0 }}
             exit={{ opacity: 0 , translateY:-50 }}
             transition={{ delay: 1 }}
-            className='   bg-gradient-to-r from-[#FF0050] to-[#FF0050] rounded-full  px-2 text-sm right-14 z-10 drop-shadow'>
+            className='   bg-gradient-to-r from-[#FF0050] to-[#FF0050] rounded-full  px-2 text-sm right-14 z-10 drop-shadow '>
               Start Creating!
               <div 
               className=' absolute w-0 h-0 border-l-[5px] border-l-transparent

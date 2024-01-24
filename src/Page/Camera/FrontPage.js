@@ -63,7 +63,7 @@ function FrontPage({handleClick}) {
           setBeforeImage(reader.result);
         };
       };
-      setMsg('proceed to the next step..')
+      setMsg('Proceed to the next step..')
       reader.readAsDataURL(file);
       setTimeout(()=>{
         navigate("/templates");
@@ -125,20 +125,30 @@ function FrontPage({handleClick}) {
               transition={{ duration: 0.5 }}
               className='mx-auto relative overflow-hidden z-0  w-6/12 md:w-5/12 lg:w-4/12'
             >
+              {msg &&
+                <motion.div
+                  initial={{ opacity: 0,y:10 }}
+                  animate={{ opacity: 1,y:0,rotate:'-5deg'}}
+                  exit={{ opacity: 0,y:10}} 
+                  transition={{ delay: 0.2 }}
+                  className=' absolute top-[30%] right-0 text-[#fff] text-base  bg-[#FF0050] border-[#111111] border-0 rounded-full  px-3 py-1    z-30 '
 
+                >
+                    {msg}
+                    <div 
+                      className=' absolute w-0 h-0 border-l-[8px] border-l-transparent
+                      border-t-[13px] border-t-[#FF0050]
+                      border-r-[8px] border-r-transparent '
+                      ></div>
+                </motion.div>
+              } 
               <img
                 src= {'https://r2.web.moonshine.tw/msweb/backto80s_ai/bg-transparent.png?width=500'}
                 alt="card-image"
                 className='max-w-full w-full relative z-10 '
 
               />
-              {msg &&
-                  <motion.div
-                    initial={{ opacity: 0,y:10 }}
-                    animate={{ opacity: 1,y:0}}
-                    exit={{ opacity: 0,y:10}} 
-                    className=' absolute top-1/2 left-0 text-[#FF0050] text-base font-bold bg-[#FFF7BB]/70 border-[#111111] border rounded-full  px-3 py-1  uppercase  z-30 w-full'>{msg}</motion.div>
-              } 
+
               <div className=' absolute bottom-0 left-1/2 -translate-x-1/2 w-3/5  z-0  overflow-hidden'>
                 
                 <motion.div 

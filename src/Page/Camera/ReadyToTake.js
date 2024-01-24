@@ -182,7 +182,7 @@ function ReadyToTake({handleBackClick}) {
         setBeforeImage(reader.result)
       };
       reader.readAsDataURL(compressFiles);
-      setMsg('proceed to the next step..')
+      setMsg('Proceed to the next step..')
       setTimeout(()=>{
         navigate("/templates");
       },1200)
@@ -466,7 +466,15 @@ function ReadyToTake({handleBackClick}) {
                       initial={{ opacity: 0,y:10 }}
                       animate={{ opacity: 1,y:0}}
                       exit={{ opacity: 0,y:10}} 
-                      className=' absolute top-10 translate-x-1/2  text-[#fff] text-base font-bold bg-[#FF0050] border-[#111111] border-0 rounded-full  px-3 py-1  uppercase  z-30 '>{msg}</motion.div>
+                      transition={{ delay: 0.2 }}
+                      className=' absolute top-10 translate-x-1/2  text-[#fff] text-base  bg-[#FF0050] border-[#111111] border-0 rounded-full  px-3 py-1    z-30 '>
+                        {msg}
+                        <div 
+                          className=' absolute w-0 h-0 border-l-[8px] border-l-transparent
+                          border-t-[13px] border-t-[#FF0050]
+                          border-r-[8px] border-r-transparent '
+                          ></div>
+                    </motion.div>
                   } 
                   <motion.div 
                     initial={{ opacity: 0,y:-10 }} 

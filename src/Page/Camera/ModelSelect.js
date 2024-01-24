@@ -414,7 +414,81 @@ function ModelSelect() {
   
   return (
     <div className="flex flex-col justify-between items-center  w-full h-full my-10 md:my-0 md:mt-4">
+
+        <div className=' fixed top-0 left-1/2 w-full h-screen  -translate-x-1/2 overflow-hidden  flex items-center'>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1}}
+            exit={{ opacity: 0 }}
+            className='w-[120%] -ml-10 flex flex-col '
+          >
+            <div className=' '>
+              <img src={process.env.PUBLIC_URL+'/images/icon_ ribbon02.png'} alt="" className=''/>
+            </div>
+          </motion.div>
+        </div>
       
+      {isRender && 
+
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1}}
+          exit={{ opacity: 0 }}
+          className='  flex flex-col justify-center items-center  absolute  z-30  top-1/2 drop-shadow '
+        >
+          <div className='mx-auto bg-[#fff]/90 rounded-full py-4'>
+            <div className=' relative  w-full text-center '>
+                {msg && !msg.includes('Error') && (
+                  <motion.div 
+                    initial={{ opacity: 0,y:10 }}
+                    animate={{ opacity: 1,y:0}}
+                    exit={{ opacity: 0,y:10}}
+                    className='text-[#ff0050] md:text-2xl font-extrabold  mt-4 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]'>
+                      {msg}
+
+                      <div className='md:w-1/2 flex gap-2 items-center justify-center mx-auto mt-4'>
+                        <div className=' relative'>
+                          <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' />
+                        </div>
+                        <div className=' relative'>
+                          <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'200ms'}} />
+                        </div>
+                        <div className=' relative'>
+                          <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'400ms'}} />
+                        </div>
+                        <div className=' relative'>
+                          <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'600ms'}} />
+                        </div>
+                        <div className=' relative'>
+                          <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'800ms'}} />
+                        </div>
+                        
+
+                      </div>
+                    </motion.div>
+                )}
+
+                {
+                  msg && msg.includes('Error') &&
+                    <div  className='mt-4 p-2 /70 flex flex-col items-center'>
+                      <div className='text-[#FF0050] text-lg md:text-2xl font-extrabold  mt-4 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)] '>{msg}</div>
+                      <div className='md:text-lg  text-[#FF0050] mt-2'>Unsupported format or unclear image.</div>
+                      <Link to='/camera' className=' px-3  py-2 text-xs text-[#FFf] rounded-lg border-white/50 my-3 bg-[#FF0050]/20 hover:bg-[#FF0050]/40 font-roboto '>Back</Link> 
+                    </div>
+                }
+
+              </div>
+          </div>
+
+        </motion.div>
+      
+        
+      }
 
       {beforeImage?
         <Suspense fallback={<p>Loading</p>}>
@@ -451,17 +525,20 @@ function ModelSelect() {
           <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo.png" alt="" />
 
         </motion.div>
-        <div className='w-[84%] md:w-6/12 lg:w-4/12 mx-auto relative mt-10 cursor-pointer'>
+        <div className='w-[84%] md:w-6/12 lg:w-4/12 mx-auto relative mt-10 cursor-pointer z-10'>
 
           <div 
             className={ ' relative w-full transition-all duration-1000' }
-            onClick={onBtnClick}
+            onClick={isRender ? null : onBtnClick}
           >
             <TiltCard 
               imgUrl='https://r2.web.moonshine.tw/msweb/backto80s_ai/templates/btn_create3.png'
             />
+
           </div>
+
         </div>
+
         {beforeImage? 
           <div className=" ">
           </div>
@@ -473,79 +550,7 @@ function ModelSelect() {
         }
 
 
-        {isRender && 
-          <div className='fixed  inset-0 w-full h-screen bg-white/50 z-30 backdrop-blur-sm'>
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1}}
-            exit={{ opacity: 0 }}
-            className=' absolute top-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full'
-          >
-            <div className='w-full  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 '>
-              <img src={process.env.PUBLIC_URL+'/images/icon_ ribbon02.png'} alt="" className=''/>
-            </div>
-            
 
-
-            <div className='mx-auto absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-              <div className=' relative w-[75%] md:w-[280px] mt-[45%] mx-auto '>
-                <motion.img 
-                  initial={{ opacity: 0,y:10 }}
-                  animate={{ opacity: 1,y:0}}
-                  exit={{ opacity: 0,y:10}} src={bannerData[currentIndex].url} alt="Selected"  className=" max-w-full h-fulll  " />
-              </div>
-              <div className=' relative left-1/2 -translate-x-1/2  z-40 w-full text-center '>
-                  {msg && !msg.includes('Error') && (
-                    <motion.div 
-                      initial={{ opacity: 0,y:10 }}
-                      animate={{ opacity: 1,y:0}}
-                      exit={{ opacity: 0,y:10}}
-                      className='text-[#FF0050] md:text-2xl font-extrabold  mt-4 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]'>
-                        {msg}
-
-                        <div className='md:w-1/2 flex gap-2 items-center justify-center mx-auto mt-4'>
-                          <div className=' relative'>
-                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' />
-                          </div>
-                          <div className=' relative'>
-                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'200ms'}} />
-                          </div>
-                          <div className=' relative'>
-                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'400ms'}} />
-                          </div>
-                          <div className=' relative'>
-                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'600ms'}} />
-                          </div>
-                          <div className=' relative'>
-                            <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                            <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'800ms'}} />
-                          </div>
-                          
-
-                        </div>
-                      </motion.div>
-                  )}
-
-                  {
-                    msg && msg.includes('Error') &&
-                      <div  className='mt-4 p-2 /70 flex flex-col items-center'>
-                        <div className='text-[#FF0050] text-lg md:text-2xl font-extrabold  mt-4 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)] '>{msg}</div>
-                        <div className='md:text-lg  text-[#FF0050] mt-2'>Unsupported format or unclear image.</div>
-                        <Link to='/camera' className=' px-3  py-2 text-xs text-[#FFf] rounded-lg border-white/50 my-3 bg-[#FF0050]/20 hover:bg-[#FF0050]/40 font-roboto '>Back</Link> 
-                      </div>
-                  }
-
-                </div>
-            </div>
-
-          </motion.div>
-        
-          </div>
-        }
 
         
       

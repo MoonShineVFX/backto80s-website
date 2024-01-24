@@ -11,6 +11,7 @@ import {
   IconButton
 } from "@material-tailwind/react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { FiLoader } from "react-icons/fi";
 function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResultComplete}) {
@@ -51,13 +52,13 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
           </IconButton>
         </DialogHeader>
         <DialogBody className='p-0 m-0 overflow-y-auto h-5/6'>
-          <div className='flex flex-col md:flex-col justify-center items-center gap-0  '>
+          <div className='flex flex-col md:flex-col justify-center items-center gap-0 w-10/12 mx-auto  '>
 
             {Object.keys(taskStatus).length > 0 && (
-              <div className='w-[85%] relative my-10 md:pt-[5%]'>
+              <div className='relative my-10 md:pt-[5%]'>
                 <Suspense fallback={<Spinner/>}>
                   <div className='md:hidden text-center  mb-2 text-[#FF0050] font-cachet font-bold'>Press and hold to save photo↓</div>
-                  <div className='w-full md:w-[80%] mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
+                  <div className=' mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
                     {Object.keys(taskStatus).length > 0 ?
               
                       taskStatus.map((item,index)=>{
@@ -82,7 +83,16 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
                           )
                         }else{
                           return(
-                            <div key={'finish'+index} className='flex flex-col justify-center items-center  '>
+                            <a 
+                              key={'finish'+index} 
+                              className='flex flex-col justify-center items-center relative transition-all group hover:-translate-y-2  '
+                              href={item.img}
+                              target='_blank'
+                            > 
+                              <div className=' absolute top-3 right-3 transition-all opacity-50 group-hover:opacity-100'>
+                                <FaExternalLinkAlt  color='white' size={15} />
+                              </div>
+                             
                               <motion.img 
                                 initial={{ opacity: 0}}
                                 animate={{ opacity: 1}}
@@ -96,7 +106,7 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
                                 {item.status}
                               </motion.div>
 
-                            </div>
+                            </a>
                           )
                         }
 
@@ -114,28 +124,34 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
             )}
 
              
-            <div className='w-2/3 md:w-2/3 flex md:flex-col md:gap-2 items-center justify-center'>
 
-              <div className='flex  flex-col md:flex-row w-full md:w-full gap-2 md:gap-8 mt-4 md:mt-0 h-14 md:h-auto '>
-                <div className=" relative  mx-auto h-full cursor-pointer hover:-translate-y-1 transition-all" onClick={isResultComplete ? handleDownload : undefined}>
-                  <img src={process.env.PUBLIC_URL+'/images/btn_download.png'} alt=""  className={`${isResultComplete ? 'grayscale-0 ' : 'grayscale ' } h-full transition-all`}/>
+              <div className='flex justify-start flex-col    gap-2 md:gap-8 mt-4 md:mt-0 w-full '>
+                <div className="flex relative h-10 lg:h-14 justify-end " >
+                  <img 
+                    src={process.env.PUBLIC_URL+'/images/btn_download.png'} 
+                    alt=""  
+                    className={`${isResultComplete ? 'grayscale-0 ' : 'grayscale ' } h-full transition-all cursor-pointer hover:-translate-y-1`}
+                    onClick={isResultComplete ? handleDownload : undefined}
+                  />
                   {isCompressing && <div className='text-center flex items-center justify-center gap-2 '><FiLoader className='animate-spin' />Compressing..  </div>}
                 </div>
-                <div className=" relative  mx-auto h-full cursor-pointer hover:-translate-y-1 transition-all" onClick={handleOpen}>
+                {/* <div className=" relative   h-full cursor-pointer hover:-translate-y-1 transition-all hidden" onClick={handleOpen}>
                   <img src={process.env.PUBLIC_URL+'/images/btn_redraw.png'} alt=""  className="h-full"/>
                 </div>
-                <Link to='/camera' className=" relative mt-2 md:mt-0 mx-auto  h-full hover:-translate-y-1 transition-all" onClick={handleOpen}>
+                <Link to='/camera' className=" relative mt-2 md:mt-0   h-full hover:-translate-y-1 transition-all hidden" onClick={handleOpen}>
                   <img src={process.env.PUBLIC_URL+'/images/btn_reshoot.png'} alt=""  className="h-full"/>
-                </Link>
-                <Link to='/' className=" relative mt-2 md:mt-0  mx-auto  h-full hover:-translate-y-1 transition-all" onClick={handleOpen}>
-                  <img src={process.env.PUBLIC_URL+'/images/btn_home.png'} alt=""  className="h-full"/>
-                </Link>
+                </Link> */}
+                <div className="flex relative h-10 lg:h-14 justify-end ">
+                  <Link to='/' className=" relative mt-2 md:mt-0   h-full hover:-translate-y-1 transition-all" >
+                    <img src={process.env.PUBLIC_URL+'/images/btn_home.png'} alt=""  className="h-full"/>
+                  </Link>
+                </div>
+
               </div>
 
-            </div>
-
-
           </div>
+
+
 
         </DialogBody>
      
