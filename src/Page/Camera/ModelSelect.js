@@ -202,7 +202,7 @@ function ModelSelect() {
           // 上传成功，等待结果
           await new Promise((innerResolve) => setTimeout(innerResolve, 300));
           
-          statusList[index].status = 'Image uploaded, Waiting for result...';
+          statusList[index].status = 'Waiting...';
           statusList[index].id = responseData.id;
 
           resolve(responseData);

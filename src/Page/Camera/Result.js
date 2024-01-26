@@ -55,7 +55,7 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
           <div className='flex flex-col md:flex-col justify-center items-center gap-0 w-10/12 mx-auto  '>
 
             {Object.keys(taskStatus).length > 0 && (
-              <div className='relative my-10 md:pt-[5%]'>
+              <div className='relative my-4 md:pt-[5%]'>
                 <Suspense fallback={<Spinner/>}>
                   <div className='md:hidden text-center  mb-2 text-[#FF0050] font-cachet font-bold'>Press and hold to save photo↓</div>
                   <div className=' mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5'>
@@ -125,8 +125,8 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
 
              
 
-              <div className='flex justify-start flex-col    gap-2 md:gap-8 mt-4 md:mt-0 w-full '>
-                <div className="flex relative h-10 lg:h-14 justify-end " >
+              <div className='flex justify-start flex-col    gap-2 md:gap-8 mt-0 md:mt-0 w-full '>
+                <div className="flex relative h-10 lg:h-14 justify-center " >
                   <img 
                     src={process.env.PUBLIC_URL+'/images/btn_download.png'} 
                     alt=""  
@@ -141,7 +141,7 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
                 <Link to='/camera' className=" relative mt-2 md:mt-0   h-full hover:-translate-y-1 transition-all hidden" onClick={handleOpen}>
                   <img src={process.env.PUBLIC_URL+'/images/btn_reshoot.png'} alt=""  className="h-full"/>
                 </Link> */}
-                <div className="flex relative h-10 lg:h-14 justify-end ">
+                <div className="flex relative h-10 lg:h-14 justify-center ">
                   <Link to='/' className=" relative mt-2 md:mt-0   h-full hover:-translate-y-1 transition-all" >
                     <img src={process.env.PUBLIC_URL+'/images/btn_home.png'} alt=""  className="h-full"/>
                   </Link>

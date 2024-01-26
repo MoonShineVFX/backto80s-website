@@ -8,7 +8,7 @@ function RenderLayout() {
   const storedUsername = getUsernameFromCookie();
   return (
     <div 
-      className='min-h-[100vh] relative bg-black text-white bg-no-repeat bg-center bg-cover flex items-center'
+      className='min-h-[100vh] relative bg-black text-white bg-no-repeat bg-center bg-cover flex items-start md:items-center pt-[10%] md:pt-[5%]'
       style={{
         backgroundImage: `url('https://r2.web.moonshine.tw/opt/lg/msweb/backto80s_ai/bg01.png')`,
       }}

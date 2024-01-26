@@ -99,7 +99,7 @@ function FrontPage({handleClick}) {
   // test()
 
   return (
-        <div className='flex flex-col justify-between items-center md:justify-center w-full px-0  '>
+        <div className='flex flex-col justify-between  w-full px-0   '>
           {notification && (
             <CustomAlert message={notification} onClose={() => setNotification(null)} />
           )}
@@ -107,7 +107,7 @@ function FrontPage({handleClick}) {
           <div 
             className=' relative w-full md:w-8/12 lg:w-7/12 mx-auto   text-center '
           >
-            <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo_m.png" alt="" className='block lg:hidden mx-auto my-5 w-1/2 md:w-5/12' />
+            <img src="https://r2.web.moonshine.tw/msweb/backto80s_ai/logo_m.png" alt="" className='block lg:hidden mx-auto my-5 w-3/5 md:w-5/12' />
             <motion.div 
               className=' md:my-2 text-gray-200 absolute left-1/2 -translate-x-1/2 w-10/12 z-20 '
               initial={{ opacity: 0 }}
