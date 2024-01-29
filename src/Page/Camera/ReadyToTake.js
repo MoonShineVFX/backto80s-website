@@ -482,9 +482,9 @@ function ReadyToTake({handleBackClick}) {
                     initial={{ opacity: 0,y:-10 }} 
                     animate={{ opacity: 1,y:0}}
                     exit={{ opacity: 0,y:0 }}
-                    className="w-[250px] relative">
+                    className="w-full h-full relative">
                     <div className="pt-[80%]  aspect-[4/4.2] md:aspect-[13/10] relative ">
-                      <img src={image} alt="Selected"  className="absolute top-0 left-0 object-cover w-full h-full rounded-md border-0 border-white   " />
+                      <img src={image} alt="Selected"  className="absolute top-0 left-0 object-cover w-full h-full rounded-md border-0 border-white brightness-90   " />
                     </div>
                     <div className=" absolute top-1 right-1 z-20 hidden ">
                       <IconButton size="sm" className="rounded-full bg-[#FF0050] "  onClick={()=>setImage(null)}>

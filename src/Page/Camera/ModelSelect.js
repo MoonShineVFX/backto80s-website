@@ -220,7 +220,7 @@ function ModelSelect() {
       console.log('All uploads completed:', results);
       // 在这里处理所有上传任务完成后的逻辑
       const taskStatusList = [...statusList];
-        setShowRender(true)
+        setShowRender(false)
         setIsRender(false)
       console.log(statusList)
 
@@ -240,14 +240,15 @@ function ModelSelect() {
       // 在这里处理上传过程中的错误
     }
 
-
   }
   // 送出時 一一上傳四張模組 等於有四個任務id  依序拿圖
   const processTasks = async (tasks, index) => {
     if (index >= tasks.length) {
       // 所有任务都已处理完毕，退出递归
       console.log('完成了',tasks.length , index)
+
       setIsResultComplete(true)
+      setShowRender(true)
     
       return;
     }
@@ -411,6 +412,12 @@ function ModelSelect() {
       console.error(`Error fetching image from ${imageUrl}: ${error.message}`);
     }
   };
+  useEffect(()=>{
+    console.log('listen')
+    if(isRender === false && isResultComplete === false){
+      onBtnClick()
+    }
+  },[])
   
   return (
     <div className="flex flex-col justify-between items-center  w-full h-full my-10 md:my-0 md:mt-4">

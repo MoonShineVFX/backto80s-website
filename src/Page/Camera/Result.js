@@ -76,6 +76,7 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
                                 initial={{ opacity: 0,y:10 }}
                                 animate={{ opacity: 1,y:0}}
                                 exit={{ opacity: 0,y:10}}
+                                className=' hidden'
                               >
                                 {item.status}
                               </motion.div>
@@ -102,6 +103,7 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
                                 initial={{ opacity: 0,y:10 }}
                                 animate={{ opacity: 1,y:0}}
                                 exit={{ opacity: 0,y:10}}
+                                className=' hidden'
                               >
                                 {item.status}
                               </motion.div>
@@ -125,8 +127,8 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
 
              
 
-              <div className='flex justify-start flex-col    gap-2 md:gap-8 mt-0 md:mt-0 w-full '>
-                <div className="flex relative h-10 lg:h-14 justify-center " >
+              <div className='flex justify-start flex-col    gap-2 md:gap-8 mt-0 md:mt-0 w-full hidden '>
+                <div className="flex relative h-10 lg:h-14 justify-center hidden " >
                   <img 
                     src={process.env.PUBLIC_URL+'/images/btn_download.png'} 
                     alt=""  
@@ -141,7 +143,7 @@ function Result({open ,handleOpen,taskStatus,handleDownload,isCompressing,isResu
                 <Link to='/camera' className=" relative mt-2 md:mt-0   h-full hover:-translate-y-1 transition-all hidden" onClick={handleOpen}>
                   <img src={process.env.PUBLIC_URL+'/images/btn_reshoot.png'} alt=""  className="h-full"/>
                 </Link> */}
-                <div className="flex relative h-10 lg:h-14 justify-center ">
+                <div className="flex relative h-10 lg:h-14 justify-center hidden ">
                   <Link to='/' className=" relative mt-2 md:mt-0   h-full hover:-translate-y-1 transition-all" >
                     <img src={process.env.PUBLIC_URL+'/images/btn_home.png'} alt=""  className="h-full"/>
                   </Link>
