@@ -271,9 +271,11 @@ function ModelSelect() {
     }
     if (resultImage.finished === 0) {
       // 如果沒有 source_image，一段時間再嘗試
-      setTimeout(() => {
-        processTasks(tasks, index);
-      }, 800); // 假设间隔为1秒，你可以根据需要调整
+      // setTimeout(async() => {
+      //   await processTasks(tasks, index);
+      // }, 800); // 假设间隔为1秒，你可以根据需要调整
+      await new Promise((resolve) => setTimeout(resolve, 800)); // 假设间隔为0.8秒，你可以根据需要调整
+      await processTasks(tasks, index, successCount); // 继续处理当前任务
     } else {
       // 更新任務狀態
       task.finished = 1;
