@@ -208,7 +208,7 @@ function FrontPage({handleClick}) {
           </div>
           <div className='mt-auto flex flex-col justify-center items-center'>
 
-            <div className='flex flex-col gap-2 md:flex-col md:gap-0  md:w-full   '>
+            <div className='flex flex-col  md:flex-col   md:w-full   '>
 
               <div 
                 className=' relative rounded-r-lg cursor-pointer   md:w-full mx-auto -mt-6  hover:-translate-y-1 transition-all'
@@ -227,7 +227,7 @@ function FrontPage({handleClick}) {
               </div>
               <div className='text-center text-[#FFF7BB] text-lg font-extrabold drop-shadow'>or</div>
               <div 
-                className=' relative rounded-r-lg cursor-pointer   md:w-full mx-auto mt-3  hover:-translate-y-1 transition-all'
+                className=' relative rounded-r-lg cursor-pointer   md:w-full mx-auto md:mt-3  hover:-translate-y-1 transition-all'
                 onClick={onBtnClick}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}

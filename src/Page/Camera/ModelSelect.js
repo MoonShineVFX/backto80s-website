@@ -244,7 +244,11 @@ function ModelSelect() {
   // 送出時 一一上傳四張模組 等於有四個任務id  依序拿圖
   const processTasks = async (tasks, index,successCount=0) => {
     
-
+    if(successCount === 4) {
+      setIsRender(false)
+      setShowRender(true)
+      return
+    }
     if (index >= tasks.length) {
       // 所有任务都已处理完毕，退出递归
       console.log('完成了',tasks.length , index)
@@ -253,11 +257,7 @@ function ModelSelect() {
 
       setMsg(`Get result image..`)
       console.log('getResulImage 完成的次数:', successCount);
-      if(successCount === 4) {
-        setIsRender(false)
-        setShowRender(true)
-      
-      }
+
       return;
     }
 
@@ -284,7 +284,7 @@ function ModelSelect() {
       successCount++;
   
       // 處理下一任務
-      processTasks(tasks, index + 1,successCount);
+      await processTasks(tasks, index + 1,successCount);
     }
   };
 
