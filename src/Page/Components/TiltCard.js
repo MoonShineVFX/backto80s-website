@@ -56,7 +56,7 @@ function TiltCard({imgUrl}) {
     >       
 
       <motion.div
-        className=' absolute top-0 left-0 pointer-events-none transition-all grid grid-cols-2 gap-2'
+        className=' absolute top-0 left-0 pointer-events-none transition-all grid grid-cols-2 gap-2 w-full'
         style={{
           xOffset,
           yOffset,
@@ -84,7 +84,7 @@ function TiltCard({imgUrl}) {
             exit={{ opacity: 0 , translateY:-50 }}
             transition={{ delay: 1 }}
             className='   bg-gradient-to-r from-[#FF0050] to-[#FF0050] rounded-full  px-2 text-sm right-14 z-10 drop-shadow '>
-              Start Creating!
+              Start Creating,Now!
               <div 
               className=' absolute w-0 h-0 border-l-[5px] border-l-transparent
               border-t-[8px] border-t-[#FF0050]

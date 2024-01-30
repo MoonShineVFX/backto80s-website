@@ -31,25 +31,25 @@ function ModelSelect() {
     {
       status: 'ok',
       id: null,
-      img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/49.jpg',
+      img: 'g',
       finished: 1,
     },
     {
       status: 'ok',
       id: null,
-      img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/50.jpg',
+      img: '',
       finished: 1,
     },
     {
       status: 'Waiting for Result...',
       id: null,
-      img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/49.jpg',
+      img: '',
       finished: 0,
     } ,
     {
       status: 'Waiting for Result...',
       id: null,
-      img: 'https://r2.web.moonshine.tw/msweb/backto80s_ai/template_80s/49.jpg',
+      img: '',
       finished: 0,
     }
   ]); 
@@ -221,7 +221,7 @@ function ModelSelect() {
       // 在这里处理所有上传任务完成后的逻辑
       const taskStatusList = [...statusList];
         setShowRender(false)
-        setIsRender(false)
+        // setIsRender(false)
       console.log(statusList)
 
       for (let i = 0; i < results.length; i++) {
@@ -242,16 +242,26 @@ function ModelSelect() {
 
   }
   // 送出時 一一上傳四張模組 等於有四個任務id  依序拿圖
-  const processTasks = async (tasks, index) => {
+  const processTasks = async (tasks, index,successCount=0) => {
+    
+
     if (index >= tasks.length) {
       // 所有任务都已处理完毕，退出递归
       console.log('完成了',tasks.length , index)
 
       setIsResultComplete(true)
-      setShowRender(true)
-    
+
+      setMsg(`Get result image..`)
+      console.log('getResulImage 完成的次数:', successCount);
+      if(successCount === 4) {
+        setIsRender(false)
+        setShowRender(true)
+      
+      }
       return;
     }
+
+    
   
     const task = tasks[index];
     const resultImage = await getResulImage(task.id);
@@ -263,16 +273,18 @@ function ModelSelect() {
       // 如果沒有 source_image，一段時間再嘗試
       setTimeout(() => {
         processTasks(tasks, index);
-      }, 1500); // 假设间隔为1秒，你可以根据需要调整
+      }, 800); // 假设间隔为1秒，你可以根据需要调整
     } else {
       // 更新任務狀態
       task.finished = 1;
       task.img = resultImage.generations[0].img;
       task.status = 'Result received';
       setTaskStatus([...tasks]);
+
+      successCount++;
   
       // 處理下一任務
-      processTasks(tasks, index + 1);
+      processTasks(tasks, index + 1,successCount);
     }
   };
 
@@ -456,23 +468,23 @@ function ModelSelect() {
                       <div className='md:w-1/2 flex gap-2 items-center justify-center mx-auto mt-4'>
                         <div className=' relative'>
                           <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_2s_ease-in-out_infinite] ' />
                         </div>
                         <div className=' relative'>
                           <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'200ms'}} />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_2s_ease-in-out_infinite] ' style={{animationDelay:'200ms'}} />
                         </div>
                         <div className=' relative'>
                           <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'400ms'}} />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_2s_ease-in-out_infinite] ' style={{animationDelay:'400ms'}} />
                         </div>
                         <div className=' relative'>
                           <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'600ms'}} />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_2s_ease-in-out_infinite] ' style={{animationDelay:'600ms'}} />
                         </div>
                         <div className=' relative'>
                           <img src={process.env.PUBLIC_URL+'/images/loading-1.png'} alt="" className='w-full' />
-                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_3s_ease-in-out_infinite] ' style={{animationDelay:'800ms'}} />
+                          <img src={process.env.PUBLIC_URL+'/images/loading-2.png'} alt="" className='w-full absolute top-0 animate-[fadeInOut_2s_ease-in-out_infinite] ' style={{animationDelay:'800ms'}} />
                         </div>
                         
 
@@ -525,7 +537,7 @@ function ModelSelect() {
           <Link to='/' className=" " >
             <Button variant="text" className="flex items-center gap-3 text-[#FF3976] p-0 mb-2 text-2xl font-extrabold  mt-2 drop-shadow-[0_0.8px_0.1px_rgba(0,0,0,0.8)]">
               <FaArrowLeft size={15} className='ml-2' />
-              Back 
+              Home 
             </Button>
           </Link>
 
