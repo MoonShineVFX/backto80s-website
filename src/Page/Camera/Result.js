@@ -14,6 +14,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { FaXmark } from "react-icons/fa6";
 import { FiLoader } from "react-icons/fi";
+import { QRCodeSVG } from "qrcode.react";
+
 function Result({
   open,
   handleOpen,
@@ -25,6 +27,8 @@ function Result({
   const navigate = useNavigate();
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [qrCodeOpen, setQrCodeOpen] = useState(false);
+
   // 新增上傳函數
   const handleUpload = async () => {
     if (!selectedImage) {
@@ -71,6 +75,41 @@ function Result({
       setUploading(false);
     }
   };
+
+  // 新增處理 QR Code 顯示的函式
+  const handleShowQRCode = () => {
+    if (selectedImage) {
+      console.log("選擇的圖片 URL:", selectedImage);
+      setQrCodeOpen(true);
+    }
+  };
+
+  // QR Code 彈窗組件
+  const QRCodeDialog = () => (
+    <Dialog
+      open={qrCodeOpen}
+      handler={() => setQrCodeOpen(false)}
+      size="xs"
+      animate={{
+        mount: { scale: 1, y: 0 },
+        unmount: { scale: 0.9, y: -100 },
+      }}
+    >
+      <DialogBody className="flex flex-col items-center gap-4 p-4">
+        <h2 className="text-xl font-bold text-[#FF0050]">掃描 QR Code</h2>
+        <QRCodeSVG value={selectedImage || ""} size={200} level="H" />
+        <p className="text-sm text-gray-600 text-center mt-2">
+          掃描 QR Code 以取得圖片
+        </p>
+        <button
+          onClick={() => setQrCodeOpen(false)}
+          className="mt-4 px-6 py-2 bg-[#FF0050] text-white rounded-full hover:bg-[#d6004a] transition-colors"
+        >
+          關閉
+        </button>
+      </DialogBody>
+    </Dialog>
+  );
 
   const downloadImage = (imgurl) => {
     const imageUrl = imgurl;
@@ -119,37 +158,19 @@ function Result({
                   <div className=" mx-auto relative mt-5 md:mt-0 grid gap-4 grid-cols-2 md:grid-cols-4 px-5">
                     {Object.keys(taskStatus).length > 0 ? (
                       taskStatus.map((item, index) => {
-                        if (item.finished === 0) {
-                          return (
-                            <div
-                              key={"not" + index}
-                              className="flex flex-col justify-center items-center  "
-                            >
-                              <div className="w-full h-full  relative  overflow-hidden rounded-xl  ">
-                                <div className="w-full h-full bg-[#fbabc4] z-0  aspect-[127/158] "></div>
-                                <div className=" z-10 absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-[#f57ea3] to-transparent -translate-x-full animate-[shimmer_2s_infinite]"></div>
-                              </div>
-                              <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 10 }}
-                                className=" hidden"
-                              >
-                                {item.status}
-                              </motion.div>
-                            </div>
-                          );
-                        } else {
+                        if (item.finished === 1) {
                           return (
                             <div
                               key={"finish" + index}
                               className={`flex flex-col justify-center items-center relative transition-all group hover:-translate-y-2 cursor-pointer ${
                                 selectedImage === item.img
-                                  ? "ring-4 ring-[#ff437f] rounded-xl"
+                                  ? "ring-4 ring-[#FF0050] rounded-xl"
                                   : ""
                               }`}
-                              target="_blank"
-                              onClick={() => setSelectedImage(item.img)}
+                              onClick={() => {
+                                setSelectedImage(item.img);
+                                handleShowQRCode(); // 選擇圖片後直接顯示 QR Code
+                              }}
                             >
                               <motion.img
                                 initial={{ opacity: 0 }}
@@ -157,30 +178,23 @@ function Result({
                                 exit={{ opacity: 0 }}
                                 src={item.img}
                                 alt=""
-                                className="rounded-xl "
+                                className="rounded-xl"
                               />
-                              <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 10 }}
-                                className=" hidden"
-                              >
-                                {item.status}
-                              </motion.div>
                             </div>
                           );
                         }
+                        return null;
                       })
                     ) : (
-                      <div>no result or fail </div>
+                      <div>no result or fail</div>
                     )}
                   </div>
                   <div className="  flex flex-col justify-center  items-center mt-10">
                     <div>你可以選擇一張喜歡的圖片列印成卡片</div>
-                    <div className="text-[#FF0050]">
+                    {/* <div className="text-[#FF0050]">
                       {selectedImage ? "已選擇 1 張圖片" : "尚未選擇圖片"}
-                    </div>
-                    {selectedImage && (
+                    </div> */}
+                    {/* {selectedImage && (
                       <button
                         onClick={handleUpload}
                         disabled={uploading}
@@ -192,7 +206,7 @@ function Result({
                       >
                         {uploading ? "上傳中..." : "上傳"}
                       </button>
-                    )}
+                    )} */}
                   </div>
                 </Suspense>
               </div>
@@ -237,6 +251,9 @@ function Result({
           </div>
         </DialogBody>
       </Dialog>
+
+      {/* QR Code 彈窗 */}
+      <QRCodeDialog />
     </div>
   );
 }
